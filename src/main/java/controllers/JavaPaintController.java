@@ -106,8 +106,8 @@ public class JavaPaintController {
 
 	public void initialize() {
 		gc = canvas.getGraphicsContext2D();
-		Button[] tools = { pencilBtn, brushBtn, EraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
-		this.tools = tools;
+		Button[] tools_ = { pencilBtn, brushBtn, EraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
+		this.tools = tools_;
 		bindSize();
 		bindZoom();
 		bindMouseXY();
