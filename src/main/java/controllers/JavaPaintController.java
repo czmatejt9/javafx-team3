@@ -123,8 +123,9 @@ public class JavaPaintController {
 	private void initializeHistory() {
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
-		if (undoStack.isEmpty())
+		if (undoStack.isEmpty()) {
 			undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
+		}
 	}
 
 	private void SetupDrawEvents() {
@@ -140,40 +141,40 @@ public class JavaPaintController {
 				gc.setStroke(color2);
 			}
 			switch (selectedTool) {
-			case "pencil":
-				prevX = e.getX();
-				prevY = e.getY();
-				gc.strokeLine(prevX, prevY, prevX, prevY);
-				break;
-			case "brush":
-				prevX = e.getX();
-				prevY = e.getY();
-				gc.fillArc(e.getX() - SizeVal, e.getY() - SizeVal, SizeVal, SizeVal, 0, 360, ArcType.ROUND);
-				break;
-			case "eraser":
-				prevX = e.getX();
-				prevY = e.getY();
-				gc.setFill(Color.WHITE);
-				gc.setStroke(Color.WHITE);
-				gc.fillRect(e.getX(), e.getY(), SizeVal, SizeVal);
-				break;
-			case "bucket":
-				if (e.isPrimaryButtonDown())
-					bucketFill((int)e.getX(), (int)e.getY(), color1);
-				if (e.isSecondaryButtonDown())
-					bucketFill((int)e.getX(), (int)e.getY(), color2);
-				break;
-			case "picker":
-				colorPicker1.setValue(
-						canvas.snapshot(null, null).getPixelReader().getColor((int) e.getX(), (int) e.getY()));
-				changeColor1();
-				break;
-			case "rect":
-			case "roundrect":
-			case "ellipse":
-				prevX = e.getX();
-				prevY = e.getY();
-				break;
+				case "pencil":
+					prevX = e.getX();
+					prevY = e.getY();
+					gc.strokeLine(prevX, prevY, prevX, prevY);
+					break;
+				case "brush":
+					prevX = e.getX();
+					prevY = e.getY();
+					gc.fillArc(e.getX() - SizeVal, e.getY() - SizeVal, SizeVal, SizeVal, 0, 360, ArcType.ROUND);
+					break;
+				case "eraser":
+					prevX = e.getX();
+					prevY = e.getY();
+					gc.setFill(Color.WHITE);
+					gc.setStroke(Color.WHITE);
+					gc.fillRect(e.getX(), e.getY(), SizeVal, SizeVal);
+					break;
+				case "bucket":
+					if (e.isPrimaryButtonDown())
+						bucketFill((int) e.getX(), (int) e.getY(), color1);
+					if (e.isSecondaryButtonDown())
+						bucketFill((int) e.getX(), (int) e.getY(), color2);
+					break;
+				case "picker":
+					colorPicker1.setValue(
+							canvas.snapshot(null, null).getPixelReader().getColor((int) e.getX(), (int) e.getY()));
+					changeColor1();
+					break;
+				case "rect":
+				case "roundrect":
+				case "ellipse":
+					prevX = e.getX();
+					prevY = e.getY();
+					break;
 			}
 		});
 
@@ -188,61 +189,62 @@ public class JavaPaintController {
 				gc.setFill(color2);
 				gc.setStroke(color2);
 			}
-			
+
 			switch (selectedTool) {
-			case "pencil":
-				gc.strokeLine(prevX, prevY, e.getX(), e.getY());
-				prevX = e.getX();
-				prevY = e.getY();
-				break;
-			case "brush":
-				if (Math.abs(e.getX() - prevX) > Math.max(SizeVal/2 ,1) || Math.abs(e.getY() - prevY) > Math.max(SizeVal/2 ,1)) {
-					double myprevX = prevX;
-					double myprevY = prevY;
-					drawExtraPoints(myprevX, myprevY, e.getX(), e.getY());
-				}
-				gc.fillArc(e.getX() - SizeVal, e.getY() - SizeVal,  SizeVal,  SizeVal, 0, 360, ArcType.ROUND);
-				prevX = e.getX();
-				prevY = e.getY();
-				break;
-			case "eraser":
-				gc.setFill(Color.WHITE);
-				gc.setStroke(Color.WHITE);
-				gc.fillRect(e.getX(), e.getY(), SizeVal, SizeVal);
-				if (Math.abs(e.getX() - prevX) > Math.max(SizeVal/2 ,1)
-						|| Math.abs(e.getY() - prevY) > Math.max(SizeVal/2 ,1)) {
-					double myprevX = prevX;
-					double myprevY = prevY;
-					deleteExtraPoints(myprevX, myprevY, e.getX(), e.getY());
-				}
-				prevX = e.getX();
-				prevY = e.getY();
-				break;
-			case "bucket":
+				case "pencil":
+					gc.strokeLine(prevX, prevY, e.getX(), e.getY());
+					prevX = e.getX();
+					prevY = e.getY();
+					break;
+				case "brush":
+					if (Math.abs(e.getX() - prevX) > Math.max(SizeVal / 2, 1)
+							|| Math.abs(e.getY() - prevY) > Math.max(SizeVal / 2, 1)) {
+						double myprevX = prevX;
+						double myprevY = prevY;
+						drawExtraPoints(myprevX, myprevY, e.getX(), e.getY());
+					}
+					gc.fillArc(e.getX() - SizeVal, e.getY() - SizeVal, SizeVal, SizeVal, 0, 360, ArcType.ROUND);
+					prevX = e.getX();
+					prevY = e.getY();
+					break;
+				case "eraser":
+					gc.setFill(Color.WHITE);
+					gc.setStroke(Color.WHITE);
+					gc.fillRect(e.getX(), e.getY(), SizeVal, SizeVal);
+					if (Math.abs(e.getX() - prevX) > Math.max(SizeVal / 2, 1)
+							|| Math.abs(e.getY() - prevY) > Math.max(SizeVal / 2, 1)) {
+						double myprevX = prevX;
+						double myprevY = prevY;
+						deleteExtraPoints(myprevX, myprevY, e.getX(), e.getY());
+					}
+					prevX = e.getX();
+					prevY = e.getY();
+					break;
+				case "bucket":
 
-				break;
-			case "picker":
+					break;
+				case "picker":
 
-				break;
-			case "rect":
-				gc.drawImage(undoStack.peek().getImage(), 0, 0);
-				gc.strokeRect(Math.min(prevX,e.getX()), Math.min(prevY,e.getY()),
-						Math.abs(e.getX()-prevX), Math.abs(e.getY()-prevY));
-				break;
-			case "roundrect":
-				gc.drawImage(undoStack.peek().getImage(), 0, 0);
-				gc.strokeRoundRect(Math.min(prevX,e.getX()), Math.min(prevY,e.getY()),
-						Math.abs(e.getX()-prevX), Math.abs(e.getY()-prevY),
-						Math.min(Math.abs(e.getX()-prevX)/5, 50),Math.min(Math.abs(e.getX()-prevX)/5, 50));
-				break;
-			case "ellipse":
-				gc.drawImage(undoStack.peek().getImage(), 0, 0);
-				gc.strokeOval(Math.min(prevX,e.getX()), Math.min(prevY,e.getY()),
-						Math.abs(e.getX()-prevX), Math.abs(e.getY()-prevY));
-				break;
-			default:
+					break;
+				case "rect":
+					gc.drawImage(undoStack.peek().getImage(), 0, 0);
+					gc.strokeRect(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
+							Math.abs(e.getX() - prevX), Math.abs(e.getY() - prevY));
+					break;
+				case "roundrect":
+					gc.drawImage(undoStack.peek().getImage(), 0, 0);
+					gc.strokeRoundRect(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
+							Math.abs(e.getX() - prevX), Math.abs(e.getY() - prevY),
+							Math.min(Math.abs(e.getX() - prevX) / 5, 50), Math.min(Math.abs(e.getX() - prevX) / 5, 50));
+					break;
+				case "ellipse":
+					gc.drawImage(undoStack.peek().getImage(), 0, 0);
+					gc.strokeOval(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
+							Math.abs(e.getX() - prevX), Math.abs(e.getY() - prevY));
+					break;
+				default:
 
-				break;
+					break;
 			}
 		});
 		canvas.setOnMouseReleased((e) -> {
@@ -260,7 +262,7 @@ public class JavaPaintController {
 		PixelReader pixelReader = snapshot.getPixelReader();
 		LinkedList<PixelXY> queue = new LinkedList<>();
 		queue.addLast(new PixelXY(x, y));
-		while(!queue.isEmpty()) {
+		while (!queue.isEmpty()) {
 			PixelXY currentPixel = queue.pop();
 			Color pixelColor = pixelReader.getColor(currentPixel.getX(), currentPixel.getY());
 			if (!pixelColor.equals(fillColor)) {
@@ -277,25 +279,25 @@ public class JavaPaintController {
 
 	private ArrayList<PixelXY> getPixelNeighbors(int x, int y, WritableImage image) {
 		ArrayList<PixelXY> neighbors = new ArrayList<>();
-		if(x > 0)
+		if (x > 0)
 			neighbors.add(new PixelXY(x - 1, y));
-		if(x < image.getWidth() - 1)
+		if (x < image.getWidth() - 1)
 			neighbors.add(new PixelXY(x + 1, y));
-		if(y > 0)
+		if (y > 0)
 			neighbors.add(new PixelXY(x, y - 1));
-		if(y < image.getHeight() - 1)
+		if (y < image.getHeight() - 1)
 			neighbors.add(new PixelXY(x, y + 1));
 
 		return neighbors;
 	}
 
 	private void drawExtraPoints(double myprevX, double myprevY, double x, double y) {
-		if (Math.abs(x - myprevX) >  Math.max(SizeVal/2 ,1) || Math.abs(y - myprevY) >  Math.max(SizeVal/2 ,1)) {
+		if (Math.abs(x - myprevX) > Math.max(SizeVal / 2, 1) || Math.abs(y - myprevY) > Math.max(SizeVal / 2, 1)) {
 
 			double midx = (int) ((x + myprevX) / 2);
 			double midy = (int) ((y + myprevY) / 2);
 
-			gc.fillArc(midx - SizeVal, midy - SizeVal, SizeVal,  SizeVal, 0, 360, ArcType.ROUND);
+			gc.fillArc(midx - SizeVal, midy - SizeVal, SizeVal, SizeVal, 0, 360, ArcType.ROUND);
 
 			drawExtraPoints(myprevX, myprevY, midx, midy);
 			drawExtraPoints(midx, midy, x, y);
@@ -303,7 +305,7 @@ public class JavaPaintController {
 	}
 
 	private void deleteExtraPoints(double myprevX, double myprevY, double x, double y) {
-		if (Math.abs(x - myprevX) > Math.max(SizeVal/2 ,1) || Math.abs(y - myprevY) > Math.max(SizeVal/2 ,1)) {
+		if (Math.abs(x - myprevX) > Math.max(SizeVal / 2, 1) || Math.abs(y - myprevY) > Math.max(SizeVal / 2, 1)) {
 
 			double midx = (int) ((x + myprevX) / 2);
 			double midy = (int) ((y + myprevY) / 2);
@@ -405,7 +407,7 @@ public class JavaPaintController {
 		if (result == null)
 			return;
 		Image image = (Image) result[0];
-		File f = (File) result[1]; 
+		File f = (File) result[1];
 		int w = (int) image.getWidth();
 		int h = (int) image.getHeight();
 		canvas.setHeight(h);
@@ -425,7 +427,7 @@ public class JavaPaintController {
 	}
 
 	@FXML
-	public void saveFile() {	
+	public void saveFile() {
 		ImageFxIO saver = new ImageFxIO((Stage) BigAnchor.getScene().getWindow());
 		Image image = canvas.snapshot(null, null);
 		if (file == null) {
@@ -435,7 +437,7 @@ public class JavaPaintController {
 				projectName.setText(file.getName());
 			}
 		} else {
-			saver.saveToFile(image, file.getName().substring(file.getName().lastIndexOf(".")+1).toUpperCase(), file);
+			saver.saveToFile(image, file.getName().substring(file.getName().lastIndexOf(".") + 1).toUpperCase(), file);
 		}
 	}
 
@@ -460,7 +462,7 @@ public class JavaPaintController {
 	public void undo() {
 		if (undoStack.size() > 1) {
 			redoStack.add(undoStack.pop());
-			if(undoStack.peek().DimensionsChanged()) {
+			if (undoStack.peek().DimensionsChanged()) {
 				changeDimensions(undoStack.peek().getWidth(), undoStack.peek().getHeight());
 			}
 			gc.drawImage(undoStack.peek().getImage(), 0, 0);
@@ -473,7 +475,7 @@ public class JavaPaintController {
 		if (redoStack.size() > 0) {
 			undoStack.add(redoStack.peek());
 			CanvasHistory canvasHistory = redoStack.pop();
-			if(canvasHistory.DimensionsChanged()) {
+			if (canvasHistory.DimensionsChanged()) {
 				changeDimensions(canvasHistory.getWidth(), canvasHistory.getHeight());
 			}
 			gc.drawImage(canvasHistory.getImage(), 0, 0);
@@ -490,7 +492,8 @@ public class JavaPaintController {
 	public void openAbout() {
 		try {
 			Desktop.getDesktop().browse(new URL("https://github.com/czmatejt9/javafx_team3").toURI());
-		}catch(Exception ignored){}
+		} catch (Exception ignored) {
+		}
 	}
 
 	@FXML
@@ -516,29 +519,29 @@ public class JavaPaintController {
 		String imageName = "";
 		cursor = new ImageCursor();
 		switch (id) {
-		case "pencil":
-			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pencil32.png")),
-					0, 32);
-			break;
-		case "brush":
-			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/paintbrush32.png")),
-					6, 27);
-			break;
-		case "eraser":
-			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/eraser32.png")),
-					10, 30);
-			break;
-		case "bucket":
-			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/fill32.png")),
-					3, 28);
-			break;
-		case "picker":
-			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pipette32.png" + imageName)),
-					4, 29);
-			break;
-		default:
-			cursor = Cursor.CROSSHAIR;
-			break;
+			case "pencil":
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pencil32.png")),
+						0, 32);
+				break;
+			case "brush":
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/paintbrush32.png")),
+						6, 27);
+				break;
+			case "eraser":
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/eraser32.png")),
+						10, 30);
+				break;
+			case "bucket":
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/fill32.png")),
+						3, 28);
+				break;
+			case "picker":
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pipette32.png" + imageName)),
+						4, 29);
+				break;
+			default:
+				cursor = Cursor.CROSSHAIR;
+				break;
 		}
 
 	}
@@ -580,18 +583,18 @@ public class JavaPaintController {
 	public void applyDimensions() {
 		int w = Integer.parseInt(widthTextField.getText());
 		int h = Integer.parseInt(heightTextField.getText());
-		if(w < 1 || h < 1) {
+		if (w < 1 || h < 1) {
 			widthTextField.setText((int) canvas.getWidth() + "");
 			heightTextField.setText((int) canvas.getHeight() + "");
 			return;
 		}
 
-		undoStack.add(new CanvasHistory((int)canvas.getWidth(), (int)canvas.getHeight(),
+		undoStack.add(new CanvasHistory((int) canvas.getWidth(), (int) canvas.getHeight(),
 				undoStack.pop().getImage()));
 
 		changeDimensions(w, h);
 
-		undoStack.add(new CanvasHistory((int)canvas.getWidth(), (int)canvas.getHeight(),
+		undoStack.add(new CanvasHistory((int) canvas.getWidth(), (int) canvas.getHeight(),
 				canvas.snapshot(null, null)));
 		disableEnableRedoUndo();
 	}
@@ -604,8 +607,8 @@ public class JavaPaintController {
 			CanvasAnchor.setPrefWidth(w);
 			getCanvasHeightWidth();
 			double zoom = ScaleSlider.getValue() / 100.0;
-			group.setScaleX(zoom+0.01);
-			group.setScaleY(zoom+0.01);
+			group.setScaleX(zoom + 0.01);
+			group.setScaleY(zoom + 0.01);
 			Thread.sleep(1);
 			group.setScaleX(zoom);
 			group.setScaleY(zoom);
@@ -620,8 +623,9 @@ public class JavaPaintController {
 		discardDimensions();
 	}
 
-	@FXML public void checkEscape(KeyEvent e) {
-		if(e.getCode()== KeyCode.ESCAPE) {
+	@FXML
+	public void checkEscape(KeyEvent e) {
+		if (e.getCode() == KeyCode.ESCAPE) {
 			gc.drawImage(undoStack.peek().getImage(), 0, 0);
 		}
 	}
