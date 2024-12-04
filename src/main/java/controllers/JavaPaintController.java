@@ -1,6 +1,6 @@
 package controllers;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,29 +13,29 @@ import classes.PixelXY;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
+import javafx.scene.Group;
+import javafx.scene.ImageCursor;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Slider;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.stage.Stage;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.ImageCursor;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 public class JavaPaintController {
 
@@ -489,7 +489,7 @@ public class JavaPaintController {
 	@FXML
 	public void openAbout() {
 		try {
-			Desktop.getDesktop().browse(new URL("https://github.com/czmatejt/javafx_team3").toURI());
+			Desktop.getDesktop().browse(new URL("https://github.com/czmatejt9/javafx_team3").toURI());
 		}catch(Exception ignored){}
 	}
 
