@@ -106,8 +106,8 @@ public class JavaPaintController {
 
 	public void initialize() {
 		gc = canvas.getGraphicsContext2D();
-		Button[] tools = { pencilBtn, brushBtn, EraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
-		this.tools = tools;
+		Button[] tools_ = { pencilBtn, brushBtn, EraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
+		this.tools = tools_;
 		bindSize();
 		bindZoom();
 		bindMouseXY();
@@ -470,7 +470,7 @@ public class JavaPaintController {
 
 	@FXML
 	public void redo() {
-		if (redoStack.size() > 0) {
+		if (!redoStack.isEmpty()) {
 			undoStack.add(redoStack.peek());
 			CanvasHistory canvasHistory = redoStack.pop();
 			if(canvasHistory.DimensionsChanged()) {
@@ -546,7 +546,7 @@ public class JavaPaintController {
 	@FXML
 	public void changeSize() {
 		SizeVal = Integer
-				.parseInt(sizeCombo.getValue().toString().substring(0, sizeCombo.getValue().toString().indexOf(" ")));
+				.parseInt(sizeCombo.getValue().substring(0, sizeCombo.getValue().indexOf(" ")));
 		gc.setLineWidth(SizeVal);
 	}
 

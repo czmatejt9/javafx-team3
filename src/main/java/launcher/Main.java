@@ -41,7 +41,7 @@ public class Main extends Application {
 					System.out.println(Arrays.toString(args));
 					StringBuilder sb = new StringBuilder();
 					for (String str : args)
-						sb.append(str + " ");
+						sb.append(str).append(" ");
 					sb.delete(sb.length() - 1, sb.length());
 					handleOpenImage(sb.toString());
 				} catch (Exception e) {
