@@ -102,7 +102,7 @@ public class JavaPaintController {
 	Stack<CanvasHistory> redoStack;
 	int lineWidth = 1;
 	Color color1, color2;
-	File file;
+	File file = null;
 
 	public void initialize() {
 		gc = canvas.getGraphicsContext2D();
@@ -410,6 +410,7 @@ public class JavaPaintController {
 		getCanvasHeightWidth();
 
 		initializeHistory();
+		undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
 		disableEnableRedoUndo();
 		initializeColors();
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -452,7 +453,7 @@ public class JavaPaintController {
 
 	@FXML
 	public void undo() {
-		if (undoStack.size() > 1) {
+		if (undoStack.size() > 1 && file == null || undoStack.size() > 2 && file != null) {
 			redoStack.add(undoStack.pop());
 			if (undoStack.peek().DimensionsChanged()) {
 				changeDimensions(undoStack.peek().getWidth(), undoStack.peek().getHeight());
