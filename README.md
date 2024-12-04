@@ -4,7 +4,7 @@
 
 ## Funkce  
 - 🎨 **Výběr barvy**  
-- ✏️ **Různé nástroje pro kreslení** (tužka, štětec, guma)  
+- ✏️  **Různé nástroje pro kreslení** (tužka, štětec, guma)  
 - 💾 **Možnost uložení a načtení obrázků**  
 - 🖥️ **Uživatelsky přívětivé rozhraní**  
 

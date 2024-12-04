@@ -1,8 +1,8 @@
 package controllers;
 
-import java.awt.Desktop;
+// import java.awt.Desktop;
 import java.io.File;
-import java.net.URL;
+// import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -123,9 +123,7 @@ public class JavaPaintController {
 	private void initializeHistory() {
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
-		if (undoStack.isEmpty()) {
-			undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
-		}
+		undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
 	}
 
 	private void SetupDrawEvents() {
@@ -411,8 +409,7 @@ public class JavaPaintController {
 		CanvasAnchor.setPrefWidth(w);
 		getCanvasHeightWidth();
 
-		undoStack = new Stack<>();
-		redoStack = new Stack<>();
+		initializeHistory();
 		disableEnableRedoUndo();
 		initializeColors();
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -455,7 +452,7 @@ public class JavaPaintController {
 
 	@FXML
 	public void undo() {
-		if (undoStack.size() > 1 && !undoStack.empty()) {
+		if (undoStack.size() > 1) {
 			redoStack.add(undoStack.pop());
 			if (undoStack.peek().DimensionsChanged()) {
 				changeDimensions(undoStack.peek().getWidth(), undoStack.peek().getHeight());
@@ -467,7 +464,7 @@ public class JavaPaintController {
 
 	@FXML
 	public void redo() {
-		if (redoStack.size() > 0 && redoStack.empty()) {
+		if (!redoStack.empty()) {
 			undoStack.add(redoStack.peek());
 			CanvasHistory canvasHistory = redoStack.pop();
 			if (canvasHistory.DimensionsChanged()) {
@@ -480,16 +477,17 @@ public class JavaPaintController {
 
 	public void disableEnableRedoUndo() {
 		redoBtn.setDisable(redoStack.isEmpty());
-		System.out.println(undoStack.size());
-		undoBtn.setDisable(undoStack.size() < 2);
+		undoBtn.setDisable(undoStack.size() == 1);
 	}
 
 	@FXML
 	public void openAbout() {
-		/*try {
+		/*
+		try {
 			Desktop.getDesktop().browse(new URL("https://github.com/czmatejt9/javafx_team3").toURI());
-		} catch (Exception ignored) {
-		}*/
+			} catch (Exception ignored) {
+		}
+		*/
 	}
 
 	@FXML
@@ -512,7 +510,6 @@ public class JavaPaintController {
 				btn.getStyleClass().remove("selected-tool");
 			}
 		}
-		String imageName = "";
 		cursor = new ImageCursor();
 		switch (id) {
 			case "pencil":
@@ -532,7 +529,7 @@ public class JavaPaintController {
 						3, 28);
 				break;
 			case "picker":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pipette32.png" + imageName)),
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pipette32.png")),
 						4, 29);
 				break;
 			default:
