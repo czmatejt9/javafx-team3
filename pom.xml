@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.javafx_team3</groupId>
-    <artifactId>PaintFX</artifactId>
+    <artifactId>JavaPaint</artifactId>
     <version>11.0.1</version>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -68,7 +68,7 @@
             <artifactId>javafx-maven-plugin</artifactId>
             <version>0.0.6</version>
             <configuration>
-                <launcher>PaintFX</launcher>
+                <launcher>JavaPaint</launcher>
                 <mainClass>launcher.Main</mainClass>
                 <!--for building for cross platform include the platform jdk below (/Contents/Home/jmods)-->
 <!--                <jmodsPath>-->

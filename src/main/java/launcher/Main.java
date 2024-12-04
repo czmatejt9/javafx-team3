@@ -12,7 +12,7 @@ import jfxtras.styles.jmetro.JMetroStyleClass;
 import jfxtras.styles.jmetro.Style;
 
 public class Main extends Application {
-	static String launchName = "paintFX.fxml";
+	static String launchName = "javaPaint.fxml";
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -21,7 +21,7 @@ public class Main extends Application {
 		new JMetro(scene, Style.LIGHT);
 		scene.getRoot().getStyleClass().add(JMetroStyleClass.BACKGROUND);
 		stage.setScene(scene);
-		stage.setTitle("paintFX");
+		stage.setTitle("javaPaint");
 		stage.getIcons().add(new Image(getClass().getResource("/images/logo2.png").openStream()));
 		stage.show();
 		stage.setMinWidth(1011);

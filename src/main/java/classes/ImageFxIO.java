@@ -49,7 +49,7 @@ public class ImageFxIO {
 		}
 		return null;
 	}
-	public Object[] oepnFromFile() {
+	public Object[] openFromFile() {
 		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(
 				"Image", "*.png","*.jpg", "*.jpeg", "*.jpe", "*.jfif"),

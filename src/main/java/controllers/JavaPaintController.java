@@ -37,7 +37,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class PaintFXController {
+public class JavaPaintController {
 
 	@FXML
 	ImageView lockUnlock;
@@ -111,14 +111,13 @@ public class PaintFXController {
 		bindSize();
 		bindZoom();
 		bindMouseXY();
-		getCanvasHeighWidth();
+		getCanvasHeightWidth();
 		initializePinchZoom();
 		initializeColors();
 		initializeSizes();
 		SetupDrawEvents();
 		initializeHistory();
 		disableEnableRedoUndo();
-//		gc.setImageSmoothing(false);
 	}
 
 	private void initializeHistory() {
@@ -247,9 +246,10 @@ public class PaintFXController {
 			}
 		});
 		canvas.setOnMouseReleased((e) -> {
+
 			if (!compareImages(undoStack.peek().getImage(), (canvas.snapshot(null, null)))) {
 				undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
-				redoStack = new Stack();
+				redoStack = new Stack<>();
 				disableEnableRedoUndo();
 			}
 		});
@@ -353,7 +353,7 @@ public class PaintFXController {
 		});
 	}
 
-	private void getCanvasHeighWidth() {
+	private void getCanvasHeightWidth() {
 		canvasWidthHeight.setText((int) canvas.getWidth() + " x " + (int) canvas.getHeight() + "px");
 	}
 
@@ -401,7 +401,7 @@ public class PaintFXController {
 	@FXML
 	public void openFile() {
 		ImageFxIO loader = new ImageFxIO((Stage) BigAnchor.getScene().getWindow());
-		Object[] result = loader.oepnFromFile();
+		Object[] result = loader.openFromFile();
 		if (result == null)
 			return;
 		Image image = (Image) result[0];
@@ -412,7 +412,7 @@ public class PaintFXController {
 		canvas.setWidth(w);
 		CanvasAnchor.setPrefHeight(h);
 		CanvasAnchor.setPrefWidth(w);
-		getCanvasHeighWidth();
+		getCanvasHeightWidth();
 
 		undoStack = new Stack<>();
 		redoStack = new Stack<>();
@@ -489,7 +489,7 @@ public class PaintFXController {
 	@FXML
 	public void openAbout() {
 		try {
-			Desktop.getDesktop().browse(new URL("https://github.com/georgioyammine/PaintFX").toURI());
+			Desktop.getDesktop().browse(new URL("https://github.com/czmatejt/javafx_team3").toURI());
 		}catch(Exception ignored){}
 	}
 
@@ -508,10 +508,6 @@ public class PaintFXController {
 		b.getStyleClass().add("selected-tool");
 		String id = b.getId();
 		selectedTool = id;
-		// if(selectedTool.equals("brush"))
-		// gc.setGlobalAlpha(0.5);
-		// else
-		// gc.setGlobalAlpha(1);
 		for (Button btn : tools) {
 			if (btn != b) {
 				btn.getStyleClass().remove("selected-tool");
@@ -521,33 +517,23 @@ public class PaintFXController {
 		cursor = new ImageCursor();
 		switch (id) {
 		case "pencil":
-			imageName = "pencil";
-			imageName += "32.png";
-			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/" + imageName)),
+			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pencil32.png")),
 					0, 32);
 			break;
 		case "brush":
-			imageName = "paintbrush";
-			imageName += "32.png";
-			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/" + imageName)),
+			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/paintbrush32.png")),
 					6, 27);
 			break;
 		case "eraser":
-			imageName = "eraser";
-			imageName += "32.png";
-			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/" + imageName)),
+			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/eraser32.png")),
 					10, 30);
 			break;
 		case "bucket":
-			imageName = "fill";
-			imageName += "32.png";
-			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/" + imageName)),
+			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/fill32.png")),
 					3, 28);
 			break;
 		case "picker":
-			imageName = "pipette";
-			imageName += "32.png";
-			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/" + imageName)),
+			cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pipette32.png" + imageName)),
 					4, 29);
 			break;
 		default:
@@ -616,7 +602,7 @@ public class PaintFXController {
 			canvas.setWidth(w);
 			CanvasAnchor.setPrefHeight(h);
 			CanvasAnchor.setPrefWidth(w);
-			getCanvasHeighWidth();
+			getCanvasHeightWidth();
 			double zoom = ScaleSlider.getValue() / 100.0;
 			group.setScaleX(zoom+0.01);
 			group.setScaleY(zoom+0.01);
