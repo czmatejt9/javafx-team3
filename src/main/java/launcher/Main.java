@@ -1,6 +1,7 @@
 package launcher;
 
 import java.util.Arrays;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,6 +18,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/views/" + launchName));
+		
 		Scene scene = new Scene(root, 1100, 550);
 		new JMetro(scene, Style.LIGHT);
 		scene.getRoot().getStyleClass().add(JMetroStyleClass.BACKGROUND);
@@ -24,7 +26,7 @@ public class Main extends Application {
 		stage.setTitle("javaPaint");
 		stage.getIcons().add(new Image(getClass().getResource("/images/logo2.png").openStream()));
 		stage.show();
-		stage.setMinWidth(1011);
+		stage.setMinWidth(1000);
 		stage.setMinHeight(400);
 	}
 
