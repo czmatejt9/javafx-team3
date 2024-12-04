@@ -78,7 +78,7 @@ public class JavaPaintController {
 	@FXML
 	Button ellipseBtn;
 	@FXML
-	ComboBox<String> sizeCombo;
+	ComboBox<String> selectedSize;
 	@FXML
 	ColorPicker colorPicker1;
 	@FXML
@@ -100,7 +100,7 @@ public class JavaPaintController {
 	double prevX, prevY;
 	Stack<CanvasHistory> undoStack;
 	Stack<CanvasHistory> redoStack;
-	int SizeVal = 1;
+	int lineWidth = 1;
 	Color color1, color2;
 	File file;
 
@@ -149,14 +149,14 @@ public class JavaPaintController {
 				case "brush":
 					prevX = e.getX();
 					prevY = e.getY();
-					gc.fillArc(e.getX() - SizeVal, e.getY() - SizeVal, SizeVal, SizeVal, 0, 360, ArcType.ROUND);
+					gc.fillArc(e.getX() - lineWidth, e.getY() - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
 					break;
 				case "eraser":
 					prevX = e.getX();
 					prevY = e.getY();
 					gc.setFill(Color.WHITE);
 					gc.setStroke(Color.WHITE);
-					gc.fillRect(e.getX(), e.getY(), SizeVal, SizeVal);
+					gc.fillRect(e.getX(), e.getY(), lineWidth, lineWidth);
 					break;
 				case "bucket":
 					if (e.isPrimaryButtonDown())
@@ -197,25 +197,21 @@ public class JavaPaintController {
 					prevY = e.getY();
 					break;
 				case "brush":
-					if (Math.abs(e.getX() - prevX) > Math.max(SizeVal / 2, 1)
-							|| Math.abs(e.getY() - prevY) > Math.max(SizeVal / 2, 1)) {
-						double myprevX = prevX;
-						double myprevY = prevY;
-						drawExtraPoints(myprevX, myprevY, e.getX(), e.getY());
+					if (Math.abs(e.getX() - prevX) > Math.max(lineWidth / 2, 1)
+							|| Math.abs(e.getY() - prevY) > Math.max(lineWidth / 2, 1)) {
+						drawExtraPoints(prevX, prevY, e.getX(), e.getY());
 					}
-					gc.fillArc(e.getX() - SizeVal, e.getY() - SizeVal, SizeVal, SizeVal, 0, 360, ArcType.ROUND);
+					gc.fillArc(e.getX() - lineWidth, e.getY() - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
 					prevX = e.getX();
 					prevY = e.getY();
 					break;
 				case "eraser":
 					gc.setFill(Color.WHITE);
 					gc.setStroke(Color.WHITE);
-					gc.fillRect(e.getX(), e.getY(), SizeVal, SizeVal);
-					if (Math.abs(e.getX() - prevX) > Math.max(SizeVal / 2, 1)
-							|| Math.abs(e.getY() - prevY) > Math.max(SizeVal / 2, 1)) {
-						double myprevX = prevX;
-						double myprevY = prevY;
-						deleteExtraPoints(myprevX, myprevY, e.getX(), e.getY());
+					gc.fillRect(e.getX(), e.getY(), lineWidth, lineWidth);
+					if (Math.abs(e.getX() - prevX) > Math.max(lineWidth / 2, 1)
+							|| Math.abs(e.getY() - prevY) > Math.max(lineWidth / 2, 1)) {
+						deleteExtraPoints(prevX, prevY, e.getX(), e.getY());
 					}
 					prevX = e.getX();
 					prevY = e.getY();
@@ -248,7 +244,7 @@ public class JavaPaintController {
 			}
 		});
 		canvas.setOnMouseReleased((e) -> {
-
+			if (undoStack.empty()) return;
 			if (!compareImages(undoStack.peek().getImage(), (canvas.snapshot(null, null)))) {
 				undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
 				redoStack = new Stack<>();
@@ -291,38 +287,37 @@ public class JavaPaintController {
 		return neighbors;
 	}
 
-	private void drawExtraPoints(double myprevX, double myprevY, double x, double y) {
-		if (Math.abs(x - myprevX) > Math.max(SizeVal / 2, 1) || Math.abs(y - myprevY) > Math.max(SizeVal / 2, 1)) {
+	private void drawExtraPoints(double prevX, double prevY, double x, double y) {
+		if (Math.abs(x - prevX) > Math.max(lineWidth / 2, 1) || Math.abs(y - prevY) > Math.max(lineWidth / 2, 1)) {
+			double midx = (int) ((x + prevX) / 2);
+			double midy = (int) ((y + prevY) / 2);
 
-			double midx = (int) ((x + myprevX) / 2);
-			double midy = (int) ((y + myprevY) / 2);
+			gc.fillArc(midx - lineWidth, midy - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
 
-			gc.fillArc(midx - SizeVal, midy - SizeVal, SizeVal, SizeVal, 0, 360, ArcType.ROUND);
-
-			drawExtraPoints(myprevX, myprevY, midx, midy);
+			drawExtraPoints(prevX, prevY, midx, midy);
 			drawExtraPoints(midx, midy, x, y);
 		}
 	}
 
-	private void deleteExtraPoints(double myprevX, double myprevY, double x, double y) {
-		if (Math.abs(x - myprevX) > Math.max(SizeVal / 2, 1) || Math.abs(y - myprevY) > Math.max(SizeVal / 2, 1)) {
+	private void deleteExtraPoints(double prevX, double prevY, double x, double y) {
+		if (Math.abs(x - prevX) > Math.max(lineWidth / 2, 1) || Math.abs(y - prevY) > Math.max(lineWidth / 2, 1)) {
 
-			double midx = (int) ((x + myprevX) / 2);
-			double midy = (int) ((y + myprevY) / 2);
+			double midx = (int) ((x + prevX) / 2);
+			double midy = (int) ((y + prevY) / 2);
 
 			gc.setFill(Color.WHITE);
 			gc.setStroke(Color.WHITE);
-			gc.fillRect(midx, midy, SizeVal, SizeVal);
+			gc.fillRect(midx, midy, lineWidth, lineWidth);
 
-			deleteExtraPoints(myprevX, myprevY, midx, midy);
+			deleteExtraPoints(prevX, prevY, midx, midy);
 			deleteExtraPoints(midx, midy, x, y);
 		}
 	}
 
 	private void initializeSizes() {
 		ObservableList<String> options = FXCollections.observableArrayList("1 px", "3 px", "5 px", "8 px", "15 px");
-		sizeCombo.setItems(options);
-		sizeCombo.getSelectionModel().select(2);
+		selectedSize.setItems(options);
+		selectedSize.getSelectionModel().select(2);
 		changeSize();
 
 	}
@@ -460,7 +455,7 @@ public class JavaPaintController {
 
 	@FXML
 	public void undo() {
-		if (undoStack.size() > 1) {
+		if (undoStack.size() > 1 && !undoStack.empty()) {
 			redoStack.add(undoStack.pop());
 			if (undoStack.peek().DimensionsChanged()) {
 				changeDimensions(undoStack.peek().getWidth(), undoStack.peek().getHeight());
@@ -472,7 +467,7 @@ public class JavaPaintController {
 
 	@FXML
 	public void redo() {
-		if (redoStack.size() > 0) {
+		if (redoStack.size() > 0 && redoStack.empty()) {
 			undoStack.add(redoStack.peek());
 			CanvasHistory canvasHistory = redoStack.pop();
 			if (canvasHistory.DimensionsChanged()) {
@@ -485,15 +480,16 @@ public class JavaPaintController {
 
 	public void disableEnableRedoUndo() {
 		redoBtn.setDisable(redoStack.isEmpty());
+		System.out.println(undoStack.size());
 		undoBtn.setDisable(undoStack.size() < 2);
 	}
 
 	@FXML
 	public void openAbout() {
-		try {
+		/*try {
 			Desktop.getDesktop().browse(new URL("https://github.com/czmatejt9/javafx_team3").toURI());
 		} catch (Exception ignored) {
-		}
+		}*/
 	}
 
 	@FXML
@@ -548,9 +544,9 @@ public class JavaPaintController {
 
 	@FXML
 	public void changeSize() {
-		SizeVal = Integer
-				.parseInt(sizeCombo.getValue().toString().substring(0, sizeCombo.getValue().toString().indexOf(" ")));
-		gc.setLineWidth(SizeVal);
+		lineWidth = Integer
+				.parseInt(selectedSize.getValue().toString().substring(0, selectedSize.getValue().toString().indexOf(" ")));
+		gc.setLineWidth(lineWidth);
 	}
 
 	@FXML

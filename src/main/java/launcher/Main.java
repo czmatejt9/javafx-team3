@@ -13,11 +13,10 @@ import jfxtras.styles.jmetro.JMetroStyleClass;
 import jfxtras.styles.jmetro.Style;
 
 public class Main extends Application {
-	static String launchName = "javaPaint.fxml";
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("/views/" + launchName));
+		Parent root = FXMLLoader.load(getClass().getResource("/views/javaPaint.fxml"));
 		
 		Scene scene = new Scene(root, 1100, 550);
 		new JMetro(scene, Style.LIGHT);

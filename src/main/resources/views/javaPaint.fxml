@@ -293,7 +293,7 @@
                                                             <Image url="@../images/width.png" />
                                                          </image>
                                                       </ImageView>
-                                                      <ComboBox fx:id="sizeCombo" onAction="#changeSize" prefHeight="25.0" prefWidth="70.0" />
+                                                      <ComboBox fx:id="selectedSize" onAction="#changeSize" prefHeight="25.0" prefWidth="70.0" />
                                                    </children>
                                                    <padding>
                                                       <Insets top="10.0" />
