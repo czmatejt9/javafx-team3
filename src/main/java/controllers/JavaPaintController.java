@@ -2,7 +2,6 @@ package controllers;
 
 // import java.awt.Desktop;
 import java.io.File;
-// import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -84,10 +83,6 @@ public class JavaPaintController {
 	@FXML
 	ColorPicker colorPicker2;
 	@FXML
-	Button undoBtn;
-	@FXML
-	Button redoBtn;
-	@FXML
 	TextField heightTextField;
 	@FXML
 	TextField widthTextField;
@@ -118,7 +113,7 @@ public class JavaPaintController {
 		initializeSizes();
 		SetupDrawEvents();
 		initializeHistory();
-		disableEnableRedoUndo();
+		
 	}
 
 	private void initializeHistory() {
@@ -248,7 +243,7 @@ public class JavaPaintController {
 			if (!compareImages(undoStack.peek().getImage(), (canvas.snapshot(null, null)))) {
 				undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
 				redoStack = new Stack<>();
-				disableEnableRedoUndo();
+				
 			}
 		});
 	}
@@ -411,7 +406,7 @@ public class JavaPaintController {
 		getCanvasHeightWidth();
 
 		initializeHistory();
-		disableEnableRedoUndo();
+		
 		initializeColors();
 		content.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		content.drawImage(image, 0, 0);
@@ -459,7 +454,7 @@ public class JavaPaintController {
 			}
 			drawFileOnCanvas();
 		}
-		disableEnableRedoUndo();
+		
 	}
 
 	private void drawFileOnCanvas() {
@@ -480,13 +475,10 @@ public class JavaPaintController {
 			}
 			content.drawImage(canvasHistory.getImage(), 0, 0);
 		}
-		disableEnableRedoUndo();
+		
 	}
 
-	public void disableEnableRedoUndo() {
-		redoBtn.setDisable(redoStack.isEmpty());
-		undoBtn.setDisable(undoStack.size() < 2);
-	}
+	
 
 	@FXML
 	public void openAbout() {
@@ -505,7 +497,7 @@ public class JavaPaintController {
 		projectName.setText("Not Saved yet");
 		file = null;
 		initializeHistory();
-		disableEnableRedoUndo();
+		
 	}
 
 	@FXML
@@ -599,7 +591,7 @@ public class JavaPaintController {
 
 		undoStack.add(new CanvasHistory((int) canvas.getWidth(), (int) canvas.getHeight(),
 				canvas.snapshot(null, null)));
-		disableEnableRedoUndo();
+		
 	}
 
 	private void changeDimensions(int w, int h) {
