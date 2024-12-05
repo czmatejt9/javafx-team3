@@ -351,10 +351,10 @@ public class JavaPaintController {
 
 	private void bindMouseXY() {
 		canvas.setOnMouseMoved((e) -> {
-			pixelXY.setText((int) e.getX() + ", " + (int) e.getY());
+			pixelXY.setText((int) (e.getX() + 1) + ", " + (int) (e.getY() + 1));
 		});
 		canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, (e) -> {
-			pixelXY.setText((int) e.getX() + ", " + (int) e.getY());
+			pixelXY.setText((int) (e.getX() + 1) + ", " + (int) (e.getY() + 1));
 		});
 	}
 
