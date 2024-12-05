@@ -327,23 +327,12 @@
                <children>
                   <ScrollPane fx:id="ScrollPane" fitToHeight="true" fitToWidth="true" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
-                        <Group>
+                        <AnchorPane fx:id="canvasAnchor" prefHeight="400.0" prefWidth="1000.0" style="-fx-background-color: white">
                            <children>
-                              <Group fx:id="group">
-                                 <children>
-                                    <AnchorPane fx:id="CanvasAnchor" prefHeight="400.0" prefWidth="1000.0" style="-fx-background-color: white;">
-                                       <children>
-                                          <Canvas fx:id="canvas" height="400.0" width="1000.0">
-                                          </Canvas>
-                                       </children>
-                                       <effect>
-                                          <DropShadow blurType="GAUSSIAN" color="#868484" height="38.93" offsetX="5.0" offsetY="5.0" radius="14.425" width="20.77" />
-                                       </effect>
-                                    </AnchorPane>
-                                 </children>
-                              </Group>
+                              <Canvas fx:id="canvas" height="400.0" width="1000.0">
+                              </Canvas>
                            </children>
-                        </Group>
+                        </AnchorPane>
                      </content>
                   </ScrollPane>
                </children>

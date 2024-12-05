@@ -13,7 +13,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -43,7 +42,7 @@ public class JavaPaintController {
 	@FXML
 	Label canvasWidthHeight;
 	@FXML
-	AnchorPane CanvasAnchor;
+	AnchorPane canvasAnchor;
 	@FXML
 	Canvas canvas;
 	@FXML
@@ -52,8 +51,6 @@ public class JavaPaintController {
 	ScrollPane ScrollPane;
 	@FXML
 	Label zoomLabel;
-	@FXML
-	Group group;
 	@FXML
 	Button pencilBtn;
 	@FXML
@@ -291,20 +288,24 @@ public class JavaPaintController {
 	private void initializePinchZoom() {
 		BigAnchor.setOnScroll((e) -> {
 			if (e.isControlDown()) {
-				if (e.getDeltaY() < 0)
+				if (e.getDeltaY() < 0) {
 					ScaleSlider.adjustValue(ScaleSlider.getValue() - 25);
+				}
 
-				if (e.getDeltaY() > 0)
+				if (e.getDeltaY() > 0) {
 					ScaleSlider.adjustValue(ScaleSlider.getValue() + 25);
+				}
 			}
 		});
-		CanvasAnchor.setOnScroll((e) -> {
+		canvasAnchor.setOnScroll((e) -> {
 			if (e.isControlDown()) {
-				e.consume(); // prevent scrolling while zooming
-				if (e.getDeltaY() < 0)
+				e.consume();
+				if (e.getDeltaY() < 0) {
 					ScaleSlider.adjustValue(ScaleSlider.getValue() - 25);
-				if (e.getDeltaY() > 0)
+				}
+				if (e.getDeltaY() > 0) {
 					ScaleSlider.adjustValue(ScaleSlider.getValue() + 25);
+				}
 			}
 		});
 	}
@@ -326,8 +327,8 @@ public class JavaPaintController {
 		ScaleSlider.valueProperty().addListener((e) -> {
 			zoomLabel.setText((int) (ScaleSlider.getValue()) + "%");
 			double zoom = ScaleSlider.getValue() / 100.0;
-			group.setScaleX(zoom);
-			group.setScaleY(zoom);
+			canvasAnchor.setScaleX(zoom);
+			canvasAnchor.setScaleY(zoom);
 		});
 
 		canvas.setOnMouseEntered((e) -> BigAnchor.setCursor(cursor));
@@ -345,8 +346,8 @@ public class JavaPaintController {
 		int h = (int) image.getHeight();
 		canvas.setHeight(h);
 		canvas.setWidth(w);
-		CanvasAnchor.setPrefHeight(h);
-		CanvasAnchor.setPrefWidth(w);
+		canvasAnchor.setPrefHeight(h);
+		canvasAnchor.setPrefWidth(w);
 		getCanvasHeightWidth();
 
 		initializeHistory();
@@ -449,20 +450,16 @@ public class JavaPaintController {
 		cursor = new ImageCursor();
 		switch (id) {
 			case "pencil":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pencil32.png")),
-						0, 32);
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pencil32.png")));
 				break;
 			case "eraser":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/eraser32.png")),
-						10, 30);
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/eraser32.png")));
 				break;
 			case "bucket":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/fill32.png")),
-						3, 28);
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/fill32.png")));
 				break;
 			case "picker":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pipette32.png")),
-						4, 29);
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pipette32.png")));
 				break;
 			default:
 				cursor = Cursor.CROSSHAIR;
@@ -504,11 +501,11 @@ public class JavaPaintController {
 		int h = Integer.parseInt(heightTextField.getText());
 		canvas.setHeight(h);
 		canvas.setWidth(w);
-		CanvasAnchor.setPrefHeight(h);
-		CanvasAnchor.setPrefWidth(w);
+		canvasAnchor.setPrefHeight(h);
+		canvasAnchor.setPrefWidth(w);
 		getCanvasHeightWidth();
 		double zoom = ScaleSlider.getValue() / 100.0;
-		group.setScaleX(zoom);
-		group.setScaleY(zoom);
+		canvasAnchor.setScaleX(zoom);
+		canvasAnchor.setScaleY(zoom);
 	}
 }
