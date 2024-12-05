@@ -107,14 +107,6 @@
                                                       <Insets bottom="2.0" />
                                                    </GridPane.margin>
                                                 </ImageView>
-                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                                   <image>
-                                                      <Image url="@../images/paintbrush.png" />
-                                                   </image>
-                                                   <GridPane.margin>
-                                                      <Insets bottom="2.0" />
-                                                   </GridPane.margin>
-                                                </ImageView>
                                                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                    <image>
                                                       <Image url="@../images/eraser.png" />
@@ -140,8 +132,7 @@
                                                    </GridPane.margin>
                                                 </ImageView>
                                                 <Button id="pencil" fx:id="pencilBtn" mnemonicParsing="false" onMouseClicked="#selectTool" prefHeight="80.0" prefWidth="60.0" styleClass="transparent-button" />
-                                                <Button id="brush" fx:id="brushBtn" mnemonicParsing="false" onMouseClicked="#selectTool" prefHeight="80.0" prefWidth="60.0" styleClass="transparent-button" GridPane.columnIndex="1" />
-                                                <Button id="eraser" fx:id="EraserBtn" mnemonicParsing="false" onMouseClicked="#selectTool" prefHeight="80.0" prefWidth="60.0" styleClass="transparent-button" GridPane.columnIndex="2" />
+                                                <Button id="eraser" fx:id="eraserBtn" mnemonicParsing="false" onMouseClicked="#selectTool" prefHeight="80.0" prefWidth="60.0" styleClass="transparent-button" GridPane.columnIndex="2" />
                                                 <Button id="bucket" fx:id="bucketBtn" mnemonicParsing="false" onMouseClicked="#selectTool" prefHeight="80.0" prefWidth="60.0" styleClass="transparent-button" GridPane.rowIndex="1">
                                                    <GridPane.margin>
                                                       <Insets />
@@ -323,7 +314,7 @@
               </tabs>
             </TabPane>
             <Separator prefWidth="200.0" />
-            <AnchorPane fx:id="BigAnchor" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgb(238,238,238);" VBox.vgrow="ALWAYS">
+            <AnchorPane fx:id="bigAnchor" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgb(238,238,238);" VBox.vgrow="ALWAYS">
                <children>
                   <ScrollPane fx:id="ScrollPane" fitToHeight="true" fitToWidth="true" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <content>
@@ -357,7 +348,7 @@
                         <Insets bottom="2.0" left="5.0" />
                      </GridPane.margin>
                   </Label>
-                  <Slider fx:id="ScaleSlider" max="800.0" maxWidth="100.0" min="25.0" prefHeight="14.0" prefWidth="50.0" value="100.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                  <Slider fx:id="scaleSlider" max="800.0" maxWidth="100.0" min="25.0" prefHeight="14.0" prefWidth="50.0" value="100.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                      <GridPane.margin>
                         <Insets left="40.0" right="40.0" top="5.0" />
                      </GridPane.margin>

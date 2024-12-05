@@ -34,7 +34,7 @@ import javafx.stage.Stage;
 public class JavaPaintController {
 
 	@FXML
-	Slider ScaleSlider;
+	Slider scaleSlider;
 	@FXML
 	Label pixelXY;
 	@FXML
@@ -46,15 +46,15 @@ public class JavaPaintController {
 	@FXML
 	Canvas canvas;
 	@FXML
-	AnchorPane BigAnchor;
+	AnchorPane bigAnchor;
 	@FXML
-	ScrollPane ScrollPane;
+	ScrollPane scrollPane;
 	@FXML
 	Label zoomLabel;
 	@FXML
 	Button pencilBtn;
 	@FXML
-	Button EraserBtn;
+	Button eraserBtn;
 	@FXML
 	Button bucketBtn;
 	@FXML
@@ -91,7 +91,7 @@ public class JavaPaintController {
 
 	public void initialize() {
 		context = canvas.getGraphicsContext2D();
-		Button[] tools_ = { pencilBtn, EraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
+		Button[] tools_ = { pencilBtn, eraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
 		this.tools = tools_;
 		bindZoom();
 		bindMouseXY();
@@ -286,14 +286,14 @@ public class JavaPaintController {
 	}
 
 	private void initializePinchZoom() {
-		BigAnchor.setOnScroll((e) -> {
+		bigAnchor.setOnScroll((e) -> {
 			if (e.isControlDown()) {
 				if (e.getDeltaY() < 0) {
-					ScaleSlider.adjustValue(ScaleSlider.getValue() - 25);
+					scaleSlider.adjustValue(scaleSlider.getValue() - 25);
 				}
 
 				if (e.getDeltaY() > 0) {
-					ScaleSlider.adjustValue(ScaleSlider.getValue() + 25);
+					scaleSlider.adjustValue(scaleSlider.getValue() + 25);
 				}
 			}
 		});
@@ -301,10 +301,10 @@ public class JavaPaintController {
 			if (e.isControlDown()) {
 				e.consume();
 				if (e.getDeltaY() < 0) {
-					ScaleSlider.adjustValue(ScaleSlider.getValue() - 25);
+					scaleSlider.adjustValue(scaleSlider.getValue() - 25);
 				}
 				if (e.getDeltaY() > 0) {
-					ScaleSlider.adjustValue(ScaleSlider.getValue() + 25);
+					scaleSlider.adjustValue(scaleSlider.getValue() + 25);
 				}
 			}
 		});
@@ -324,20 +324,20 @@ public class JavaPaintController {
 	}
 
 	private void bindZoom() {
-		ScaleSlider.valueProperty().addListener((e) -> {
-			zoomLabel.setText((int) (ScaleSlider.getValue()) + "%");
-			double zoom = ScaleSlider.getValue() / 100.0;
+		scaleSlider.valueProperty().addListener((e) -> {
+			zoomLabel.setText((int) (scaleSlider.getValue()) + "%");
+			double zoom = scaleSlider.getValue() / 100.0;
 			canvasAnchor.setScaleX(zoom);
 			canvasAnchor.setScaleY(zoom);
 		});
 
-		canvas.setOnMouseEntered((e) -> BigAnchor.setCursor(cursor));
-		canvas.setOnMouseExited((e) -> BigAnchor.setCursor(Cursor.DEFAULT));
+		canvas.setOnMouseEntered((e) -> bigAnchor.setCursor(cursor));
+		canvas.setOnMouseExited((e) -> bigAnchor.setCursor(Cursor.DEFAULT));
 	}
 
 	@FXML
 	public void openFile() {
-		ImageFxIO loader = new ImageFxIO((Stage) BigAnchor.getScene().getWindow());
+		ImageFxIO loader = new ImageFxIO((Stage) bigAnchor.getScene().getWindow());
 		Object[] result = loader.openFromFile();
 		if (result == null) return;
 		image = (Image) result[0];
@@ -361,7 +361,7 @@ public class JavaPaintController {
 
 	@FXML
 	public void saveFile() {
-		ImageFxIO saver = new ImageFxIO((Stage) BigAnchor.getScene().getWindow());
+		ImageFxIO saver = new ImageFxIO((Stage) bigAnchor.getScene().getWindow());
 		Image image = canvas.snapshot(null, null);
 		if (file == null) {
 			File f = saver.saveToFile(image);
@@ -376,7 +376,7 @@ public class JavaPaintController {
 
 	@FXML
 	public void saveAs() {
-		ImageFxIO saver = new ImageFxIO((Stage) BigAnchor.getScene().getWindow());
+		ImageFxIO saver = new ImageFxIO((Stage) bigAnchor.getScene().getWindow());
 		Image image = canvas.snapshot(null, null);
 		File f = saver.saveToFile(image);
 		if (f != null) {
@@ -504,7 +504,7 @@ public class JavaPaintController {
 		canvasAnchor.setPrefHeight(h);
 		canvasAnchor.setPrefWidth(w);
 		getCanvasHeightWidth();
-		double zoom = ScaleSlider.getValue() / 100.0;
+		double zoom = scaleSlider.getValue() / 100.0;
 		canvasAnchor.setScaleX(zoom);
 		canvasAnchor.setScaleY(zoom);
 	}
