@@ -65,7 +65,6 @@
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="Y" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator></MenuItem>
-                        <SeparatorMenuItem mnemonicParsing="false" />
                      </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
