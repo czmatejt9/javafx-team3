@@ -397,9 +397,6 @@ public class JavaPaintController {
 	public void undo() {
 		if (undoStack.size() > 1) {
 			redoStack.add(undoStack.pop());
-			if (undoStack.peek().DimensionsChanged()) {
-				changeDimensions(undoStack.peek().getWidth(), undoStack.peek().getHeight());
-			}
 			drawFileOnCanvas();
 		}
 	}
@@ -417,9 +414,6 @@ public class JavaPaintController {
 		if (!redoStack.empty()) {
 			undoStack.add(redoStack.peek());
 			CanvasHistory canvasHistory = redoStack.pop();
-			if (canvasHistory.DimensionsChanged()) {
-				changeDimensions(canvasHistory.getWidth(), canvasHistory.getHeight());
-			}
 			context.drawImage(canvasHistory.getImage(), 0, 0);
 		}
 		
@@ -509,53 +503,17 @@ public class JavaPaintController {
 	}
 
 	@FXML
-	public void discardDimensions() {
-		widthTextField.setText((int) canvas.getWidth() + "");
-		heightTextField.setText((int) canvas.getHeight() + "");
-	}
-
-	@FXML
-	public void applyDimensions() {
+	public void changeDimensions() {
 		int w = Integer.parseInt(widthTextField.getText());
 		int h = Integer.parseInt(heightTextField.getText());
-		if (w < 1 || h < 1) {
-			widthTextField.setText((int) canvas.getWidth() + "");
-			heightTextField.setText((int) canvas.getHeight() + "");
-			return;
-		}
-
-		undoStack.add(new CanvasHistory((int) canvas.getWidth(), (int) canvas.getHeight(),
-				undoStack.pop().getImage()));
-
-		changeDimensions(w, h);
-
-		undoStack.add(new CanvasHistory((int) canvas.getWidth(), (int) canvas.getHeight(),
-				canvas.snapshot(null, null)));
-		
-	}
-
-	private void changeDimensions(int w, int h) {
-		try {
-			canvas.setHeight(h);
-			canvas.setWidth(w);
-			CanvasAnchor.setPrefHeight(h);
-			CanvasAnchor.setPrefWidth(w);
-			getCanvasHeightWidth();
-			double zoom = ScaleSlider.getValue() / 100.0;
-			group.setScaleX(zoom + 0.01);
-			group.setScaleY(zoom + 0.01);
-			Thread.sleep(1);
-			group.setScaleX(zoom);
-			group.setScaleY(zoom);
-		} catch (InterruptedException e) {
-			widthTextField.setText((int) canvas.getWidth() + "");
-			heightTextField.setText((int) canvas.getHeight() + "");
-		}
-	}
-
-	@FXML
-	public void exitedCanvasTab() {
-		discardDimensions();
+		canvas.setHeight(h);
+		canvas.setWidth(w);
+		CanvasAnchor.setPrefHeight(h);
+		CanvasAnchor.setPrefWidth(w);
+		getCanvasHeightWidth();
+		double zoom = ScaleSlider.getValue() / 100.0;
+		group.setScaleX(zoom);
+		group.setScaleY(zoom);
 	}
 
 	@FXML

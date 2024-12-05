@@ -268,7 +268,7 @@
                               </children></AnchorPane>
                   </content>
                 </Tab>
-                <Tab onSelectionChanged="#exitedCanvasTab" text="Canvas">
+                <Tab text="Canvas">
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
@@ -290,14 +290,9 @@
                                                       <TextField fx:id="heightTextField" />
                                                    </children>
                                                 </VBox>
-                                                <Button mnemonicParsing="false" onAction="#applyDimensions" text="Change">
+                                                <Button mnemonicParsing="false" onAction="#changeDimensions" text="Change">
                                                    <HBox.margin>
                                                       <Insets left="20.0" top="27.0" />
-                                                   </HBox.margin>
-                                                </Button>
-                                                <Button mnemonicParsing="false" onAction="#discardDimensions" text="Discard">
-                                                   <HBox.margin>
-                                                      <Insets top="27.0" />
                                                    </HBox.margin>
                                                 </Button>
                                              </children>
