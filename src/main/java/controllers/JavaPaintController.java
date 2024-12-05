@@ -33,7 +33,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcType;
 import javafx.stage.Stage;
 
 public class JavaPaintController {
@@ -62,8 +61,6 @@ public class JavaPaintController {
 	Group group;
 	@FXML
 	Button pencilBtn;
-	@FXML
-	Button brushBtn;
 	@FXML
 	Button EraserBtn;
 	@FXML
@@ -102,7 +99,7 @@ public class JavaPaintController {
 
 	public void initialize() {
 		context = canvas.getGraphicsContext2D();
-		Button[] tools_ = { pencilBtn, brushBtn, EraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
+		Button[] tools_ = { pencilBtn, EraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
 		this.tools = tools_;
 		bindSize();
 		bindZoom();
@@ -139,11 +136,6 @@ public class JavaPaintController {
 					prevX = e.getX();
 					prevY = e.getY();
 					context.strokeLine(prevX, prevY, prevX, prevY);
-					break;
-				case "brush":
-					prevX = e.getX();
-					prevY = e.getY();
-					context.fillArc(e.getX() - lineWidth, e.getY() - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
 					break;
 				case "eraser":
 					prevX = e.getX();
@@ -187,15 +179,6 @@ public class JavaPaintController {
 			switch (selectedTool) {
 				case "pencil":
 					context.strokeLine(prevX, prevY, e.getX(), e.getY());
-					prevX = e.getX();
-					prevY = e.getY();
-					break;
-				case "brush":
-					if (Math.abs(e.getX() - prevX) > Math.max(lineWidth / 2, 1)
-							|| Math.abs(e.getY() - prevY) > Math.max(lineWidth / 2, 1)) {
-						drawExtraPoints(prevX, prevY, e.getX(), e.getY());
-					}
-					context.fillArc(e.getX() - lineWidth, e.getY() - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
 					prevX = e.getX();
 					prevY = e.getY();
 					break;
@@ -280,18 +263,6 @@ public class JavaPaintController {
 			neighbors.add(new PixelXY(x, y + 1));
 
 		return neighbors;
-	}
-
-	private void drawExtraPoints(double prevX, double prevY, double x, double y) {
-		if (Math.abs(x - prevX) > Math.max(lineWidth / 2, 1) || Math.abs(y - prevY) > Math.max(lineWidth / 2, 1)) {
-			double midx = (int) ((x + prevX) / 2);
-			double midy = (int) ((y + prevY) / 2);
-
-			context.fillArc(midx - lineWidth, midy - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
-
-			drawExtraPoints(prevX, prevY, midx, midy);
-			drawExtraPoints(midx, midy, x, y);
-		}
 	}
 
 	private void deleteExtraPoints(double prevX, double prevY, double x, double y) {
@@ -447,7 +418,8 @@ public class JavaPaintController {
 
 	@FXML
 	public void undo() {
-		if (!undoStack.empty()) {
+		if (undoStack.size() > 1) {
+			System.out.println(undoStack.size());
 			redoStack.add(undoStack.pop());
 			if (undoStack.peek().DimensionsChanged()) {
 				changeDimensions(undoStack.peek().getWidth(), undoStack.peek().getHeight());
@@ -516,10 +488,6 @@ public class JavaPaintController {
 			case "pencil":
 				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pencil32.png")),
 						0, 32);
-				break;
-			case "brush":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/paintbrush32.png")),
-						6, 27);
 				break;
 			case "eraser":
 				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/eraser32.png")),
