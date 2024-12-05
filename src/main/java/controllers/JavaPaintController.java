@@ -25,6 +25,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -101,7 +102,6 @@ public class JavaPaintController {
 		initializeSizes();
 		SetupDrawEvents();
 		initializeHistory();
-		
 	}
 
 	private void initializeHistory() {
@@ -233,8 +233,9 @@ public class JavaPaintController {
 				snapshot.getPixelWriter().setColor(currentPixel.getX(), currentPixel.getY(), fillColor);
 				ArrayList<PixelXY> neighbors = getPixelNeighbors(currentPixel.getX(), currentPixel.getY(), snapshot);
 				for (PixelXY neighbor : neighbors) {
-					if (pixelReader.getColor(neighbor.getX(), neighbor.getY()).equals(pixelColor))
+					if (pixelReader.getColor(neighbor.getX(), neighbor.getY()).equals(pixelColor)) {
 						queue.addLast(neighbor);
+					}
 				}
 			}
 		}
@@ -433,7 +434,6 @@ public class JavaPaintController {
 		projectName.setText("Not Saved yet");
 		file = null;
 		initializeHistory();
-		
 	}
 
 	@FXML
@@ -465,7 +465,6 @@ public class JavaPaintController {
 				cursor = Cursor.CROSSHAIR;
 				break;
 		}
-
 	}
 
 	@FXML
@@ -486,10 +485,11 @@ public class JavaPaintController {
 	}
 
 	static public boolean compareImages(Image im1, Image im2) {
-		for (int i = 0; i < im1.getWidth(); i++) {
-			for (int j = 0; j < im1.getHeight(); j++) {
-				if (!im1.getPixelReader().getColor(i, j).equals(im2.getPixelReader().getColor(i, j)))
+		for (int x = 0; x < im1.getWidth(); x++) {
+			for (int y = 0; y < im1.getHeight(); y++) {
+				if (!im1.getPixelReader().getColor(x, y).equals(im2.getPixelReader().getColor(x, y))) {
 					return false;
+				}
 			}
 		}
 		return true;
@@ -507,5 +507,58 @@ public class JavaPaintController {
 		double zoom = scaleSlider.getValue() / 100.0;
 		canvasAnchor.setScaleX(zoom);
 		canvasAnchor.setScaleY(zoom);
+	}
+
+	@FXML
+	public void generateImage() {
+		newFile();
+		PixelWriter pxw = context.getPixelWriter();
+		boolean raise = true;
+		int r = 0;
+		int g = 0;
+		int b = 0;
+		if (canvas.getHeight() >= canvas.getWidth()) {
+			for (int x = 0; x < canvas.getWidth(); x++) {
+				for (int y = 0; y < canvas.getHeight(); y++) {
+					pxw.setColor(x, y, Color.rgb(r, g, b, 1.0));
+					
+					if (r > 254 || g > 254 || b > 254) {
+						raise = false;
+					} else if (r < 1 || g < 1 || b < 1) {
+						raise = true;
+					}
+					if (raise) {
+						r++;
+						g++;
+						b++;
+					} else {
+						r--;
+						g--;
+						b--;
+					}
+				}
+			}
+		} else {
+			for (int y = 0; y < canvas.getHeight(); y++) {
+				for (int x = 0; x < canvas.getWidth(); x++) {
+					pxw.setColor(x, y, Color.rgb(r, g, b, 1.0));
+					
+					if (r > 254 || g > 254 || b > 254) {
+						raise = false;
+					} else if (r < 1 || g < 1 || b < 1) {
+						raise = true;
+					}
+					if (raise) {
+						r++;
+						g++;
+						b++;
+					} else {
+						r--;
+						g--;
+						b--;
+					}
+				}
+			}
+		}
 	}
 }
