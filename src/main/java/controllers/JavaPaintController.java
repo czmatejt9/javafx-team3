@@ -96,7 +96,7 @@ public class JavaPaintController {
 	Button[] tools;
 	Cursor cursor;
 	String selectedTool = "";
-	GraphicsContext gc;
+	GraphicsContext content;
 	double prevX, prevY;
 	Stack<CanvasHistory> undoStack;
 	Stack<CanvasHistory> redoStack;
@@ -106,7 +106,7 @@ public class JavaPaintController {
 	Image image = null;
 
 	public void initialize() {
-		gc = canvas.getGraphicsContext2D();
+		content = canvas.getGraphicsContext2D();
 		Button[] tools_ = { pencilBtn, brushBtn, EraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
 		this.tools = tools_;
 		bindSize();
@@ -132,30 +132,30 @@ public class JavaPaintController {
 			if (selectedTool.isEmpty())
 				return;
 			if (e.isPrimaryButtonDown()) {
-				gc.setFill(color1);
-				gc.setStroke(color1);
+				content.setFill(color1);
+				content.setStroke(color1);
 			}
 			if (e.isSecondaryButtonDown()) {
-				gc.setFill(color2);
-				gc.setStroke(color2);
+				content.setFill(color2);
+				content.setStroke(color2);
 			}
 			switch (selectedTool) {
 				case "pencil":
 					prevX = e.getX();
 					prevY = e.getY();
-					gc.strokeLine(prevX, prevY, prevX, prevY);
+					content.strokeLine(prevX, prevY, prevX, prevY);
 					break;
 				case "brush":
 					prevX = e.getX();
 					prevY = e.getY();
-					gc.fillArc(e.getX() - lineWidth, e.getY() - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
+					content.fillArc(e.getX() - lineWidth, e.getY() - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
 					break;
 				case "eraser":
 					prevX = e.getX();
 					prevY = e.getY();
-					gc.setFill(Color.WHITE);
-					gc.setStroke(Color.WHITE);
-					gc.fillRect(e.getX(), e.getY(), lineWidth, lineWidth);
+					content.setFill(Color.WHITE);
+					content.setStroke(Color.WHITE);
+					content.fillRect(e.getX(), e.getY(), lineWidth, lineWidth);
 					break;
 				case "bucket":
 					if (e.isPrimaryButtonDown())
@@ -181,17 +181,17 @@ public class JavaPaintController {
 			if (selectedTool.isEmpty())
 				return;
 			if (e.isPrimaryButtonDown()) {
-				gc.setFill(color1);
-				gc.setStroke(color1);
+				content.setFill(color1);
+				content.setStroke(color1);
 			}
 			if (e.isSecondaryButtonDown()) {
-				gc.setFill(color2);
-				gc.setStroke(color2);
+				content.setFill(color2);
+				content.setStroke(color2);
 			}
 
 			switch (selectedTool) {
 				case "pencil":
-					gc.strokeLine(prevX, prevY, e.getX(), e.getY());
+					content.strokeLine(prevX, prevY, e.getX(), e.getY());
 					prevX = e.getX();
 					prevY = e.getY();
 					break;
@@ -200,14 +200,14 @@ public class JavaPaintController {
 							|| Math.abs(e.getY() - prevY) > Math.max(lineWidth / 2, 1)) {
 						drawExtraPoints(prevX, prevY, e.getX(), e.getY());
 					}
-					gc.fillArc(e.getX() - lineWidth, e.getY() - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
+					content.fillArc(e.getX() - lineWidth, e.getY() - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
 					prevX = e.getX();
 					prevY = e.getY();
 					break;
 				case "eraser":
-					gc.setFill(Color.WHITE);
-					gc.setStroke(Color.WHITE);
-					gc.fillRect(e.getX(), e.getY(), lineWidth, lineWidth);
+					content.setFill(Color.WHITE);
+					content.setStroke(Color.WHITE);
+					content.fillRect(e.getX(), e.getY(), lineWidth, lineWidth);
 					if (Math.abs(e.getX() - prevX) > Math.max(lineWidth / 2, 1)
 							|| Math.abs(e.getY() - prevY) > Math.max(lineWidth / 2, 1)) {
 						deleteExtraPoints(prevX, prevY, e.getX(), e.getY());
@@ -223,19 +223,19 @@ public class JavaPaintController {
 					break;
 				case "rect":
 					drawFileOnCanvas();
-					gc.strokeRect(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
+					content.strokeRect(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
 							Math.abs(e.getX() - prevX), Math.abs(e.getY() - prevY));
 					break;
 				case "roundrect":
 				
 					drawFileOnCanvas();
-					gc.strokeRoundRect(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
+					content.strokeRoundRect(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
 							Math.abs(e.getX() - prevX), Math.abs(e.getY() - prevY),
 							Math.min(Math.abs(e.getX() - prevX) / 5, 50), Math.min(Math.abs(e.getX() - prevX) / 5, 50));
 					break;
 				case "ellipse":
 					drawFileOnCanvas();
-					gc.strokeOval(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
+					content.strokeOval(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
 							Math.abs(e.getX() - prevX), Math.abs(e.getY() - prevY));
 					break;
 				default:
@@ -270,7 +270,7 @@ public class JavaPaintController {
 				}
 			}
 		}
-		gc.drawImage(snapshot, 0, 0);
+		content.drawImage(snapshot, 0, 0);
 	}
 
 	private ArrayList<PixelXY> getPixelNeighbors(int x, int y, WritableImage image) {
@@ -292,7 +292,7 @@ public class JavaPaintController {
 			double midx = (int) ((x + prevX) / 2);
 			double midy = (int) ((y + prevY) / 2);
 
-			gc.fillArc(midx - lineWidth, midy - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
+			content.fillArc(midx - lineWidth, midy - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
 
 			drawExtraPoints(prevX, prevY, midx, midy);
 			drawExtraPoints(midx, midy, x, y);
@@ -305,9 +305,9 @@ public class JavaPaintController {
 			double midx = (int) ((x + prevX) / 2);
 			double midy = (int) ((y + prevY) / 2);
 
-			gc.setFill(Color.WHITE);
-			gc.setStroke(Color.WHITE);
-			gc.fillRect(midx, midy, lineWidth, lineWidth);
+			content.setFill(Color.WHITE);
+			content.setStroke(Color.WHITE);
+			content.fillRect(midx, midy, lineWidth, lineWidth);
 
 			deleteExtraPoints(prevX, prevY, midx, midy);
 			deleteExtraPoints(midx, midy, x, y);
@@ -399,7 +399,7 @@ public class JavaPaintController {
 	public void openFile() {
 		ImageFxIO loader = new ImageFxIO((Stage) BigAnchor.getScene().getWindow());
 		Object[] result = loader.openFromFile();
-		if (result == null)return;
+		if (result == null) return;
 		image = (Image) result[0];
 		File f = (File) result[1];
 		int w = (int) image.getWidth();
@@ -413,8 +413,8 @@ public class JavaPaintController {
 		initializeHistory();
 		disableEnableRedoUndo();
 		initializeColors();
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		gc.drawImage(image, 0, 0);
+		content.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		content.drawImage(image, 0, 0);
 		file = f;
 		projectName.setText(file.getName());
 	}
@@ -443,7 +443,6 @@ public class JavaPaintController {
 			projectName.setText(f.getName());
 			file = f;
 		}
-
 	}
 
 	@FXML
@@ -465,9 +464,9 @@ public class JavaPaintController {
 
 	private void drawFileOnCanvas() {
 		if (file == null || undoStack.size() > 1) {
-			gc.drawImage(undoStack.peek().getImage(), 0, 0);
+			content.drawImage(undoStack.peek().getImage(), 0, 0);
 		} else {
-			gc.drawImage(image, 0, 0);
+			content.drawImage(image, 0, 0);
 		}
 	}
 
@@ -479,7 +478,7 @@ public class JavaPaintController {
 			if (canvasHistory.DimensionsChanged()) {
 				changeDimensions(canvasHistory.getWidth(), canvasHistory.getHeight());
 			}
-			gc.drawImage(canvasHistory.getImage(), 0, 0);
+			content.drawImage(canvasHistory.getImage(), 0, 0);
 		}
 		disableEnableRedoUndo();
 	}
@@ -502,7 +501,7 @@ public class JavaPaintController {
 
 	@FXML
 	public void newFile() {
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		content.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		projectName.setText("Not Saved yet");
 		file = null;
 		initializeHistory();
@@ -554,7 +553,7 @@ public class JavaPaintController {
 		lineWidth = Integer
 				.parseInt(selectedSize.getValue().toString().substring(0,
 						selectedSize.getValue().toString().indexOf(" ")));
-		gc.setLineWidth(lineWidth);
+		content.setLineWidth(lineWidth);
 	}
 
 	@FXML
@@ -630,7 +629,7 @@ public class JavaPaintController {
 	@FXML
 	public void checkEscape(KeyEvent e) {
 		if (e.getCode() == KeyCode.ESCAPE) {
-			gc.drawImage(undoStack.peek().getImage(), 0, 0);
+			content.drawImage(undoStack.peek().getImage(), 0, 0);
 		}
 	}
 

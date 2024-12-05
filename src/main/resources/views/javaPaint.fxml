@@ -75,7 +75,7 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <TabPane minHeight="-Infinity" prefHeight="145.0" prefWidth="728.0" style="-fx-background-color: rgb(240,242,243);" tabClosingPolicy="UNAVAILABLE">
+            <TabPane minHeight="-Infinity" prefHeight="160.0" prefWidth="728.0" style="-fx-background-color: rgb(240,242,243);" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab text="Home">
                   <content>
