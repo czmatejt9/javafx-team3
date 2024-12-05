@@ -28,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -103,6 +104,7 @@ public class JavaPaintController {
 	int lineWidth = 1;
 	Color color1, color2;
 	File file = null;
+	Image image = null;
 
 	public void initialize() {
 		gc = canvas.getGraphicsContext2D();
@@ -177,6 +179,9 @@ public class JavaPaintController {
 		});
 
 		canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, (e) -> {
+			System.out.println(undoStack.size());
+			System.out.println(redoStack.size());
+			System.out.println("//////////");
 			if (selectedTool.isEmpty())
 				return;
 			if (e.isPrimaryButtonDown()) {
@@ -397,9 +402,8 @@ public class JavaPaintController {
 	public void openFile() {
 		ImageFxIO loader = new ImageFxIO((Stage) BigAnchor.getScene().getWindow());
 		Object[] result = loader.openFromFile();
-		if (result == null)
-			return;
-		Image image = (Image) result[0];
+		if (result == null)return;
+		image = (Image) result[0];
 		File f = (File) result[1];
 		int w = (int) image.getWidth();
 		int h = (int) image.getHeight();
@@ -410,7 +414,6 @@ public class JavaPaintController {
 		getCanvasHeightWidth();
 
 		initializeHistory();
-		undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
 		disableEnableRedoUndo();
 		initializeColors();
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -453,12 +456,16 @@ public class JavaPaintController {
 
 	@FXML
 	public void undo() {
-		if (undoStack.size() > 1 && file == null || undoStack.size() > 2 && file != null) {
+		if (!undoStack.empty()) {
 			redoStack.add(undoStack.pop());
 			if (undoStack.peek().DimensionsChanged()) {
 				changeDimensions(undoStack.peek().getWidth(), undoStack.peek().getHeight());
 			}
-			gc.drawImage(undoStack.peek().getImage(), 0, 0);
+			if (file == null || undoStack.size() > 1) {
+				gc.drawImage(undoStack.peek().getImage(), 0, 0);
+			} else {
+				canvas.getGraphicsContext2D().drawImage(image, 0, 0);
+			}
 		}
 		disableEnableRedoUndo();
 	}
@@ -478,17 +485,18 @@ public class JavaPaintController {
 
 	public void disableEnableRedoUndo() {
 		redoBtn.setDisable(redoStack.isEmpty());
-		undoBtn.setDisable(undoStack.size() == 1);
+		undoBtn.setDisable(undoStack.size() < 2);
 	}
 
 	@FXML
 	public void openAbout() {
 		/*
-		try {
-			Desktop.getDesktop().browse(new URL("https://github.com/czmatejt9/javafx_team3").toURI());
-			} catch (Exception ignored) {
-		}
-		*/
+		 * try {
+		 * Desktop.getDesktop().browse(new
+		 * URL("https://github.com/czmatejt9/javafx_team3").toURI());
+		 * } catch (Exception ignored) {
+		 * }
+		 */
 	}
 
 	@FXML
@@ -543,7 +551,8 @@ public class JavaPaintController {
 	@FXML
 	public void changeSize() {
 		lineWidth = Integer
-				.parseInt(selectedSize.getValue().toString().substring(0, selectedSize.getValue().toString().indexOf(" ")));
+				.parseInt(selectedSize.getValue().toString().substring(0,
+						selectedSize.getValue().toString().indexOf(" ")));
 		gc.setLineWidth(lineWidth);
 	}
 
