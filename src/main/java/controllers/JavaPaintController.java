@@ -513,7 +513,9 @@ public class JavaPaintController {
 	public void generateImage() {
 		newFile();
 		PixelWriter pxw = context.getPixelWriter();
-		boolean raise = true;
+		boolean raiseR = true;
+		boolean raiseG = false;
+		boolean raiseB = false;
 		int r = 0;
 		int g = 0;
 		int b = 0;
@@ -522,19 +524,33 @@ public class JavaPaintController {
 				for (int y = 0; y < canvas.getHeight(); y++) {
 					pxw.setColor(x, y, Color.rgb(r, g, b, 1.0));
 					
-					if (r > 254 || g > 254 || b > 254) {
-						raise = false;
-					} else if (r < 1 || g < 1 || b < 1) {
-						raise = true;
-					}
-					if (raise) {
+					if (raiseR) {
 						r++;
+						if (r > 254) {
+							r = 0;
+							raiseR = false;
+							raiseG = true;
+						} else if (r < 1) {
+							raiseR = true;
+						}
+					} else if (raiseG) {
 						g++;
+						if (g > 254) {
+							g = 0;
+							raiseG = false;
+							raiseB = true;
+						} else if (g < 1) {
+							raiseG = true;
+						}
+					} else if (raiseB) {
 						b++;
-					} else {
-						r--;
-						g--;
-						b--;
+						if (b > 254) {
+							b = 0;
+							raiseB = false;
+							raiseR = true;
+						} else if (b < 1) {
+							raiseB = true;
+						}
 					}
 				}
 			}
@@ -543,19 +559,33 @@ public class JavaPaintController {
 				for (int x = 0; x < canvas.getWidth(); x++) {
 					pxw.setColor(x, y, Color.rgb(r, g, b, 1.0));
 					
-					if (r > 254 || g > 254 || b > 254) {
-						raise = false;
-					} else if (r < 1 || g < 1 || b < 1) {
-						raise = true;
-					}
-					if (raise) {
+					if (raiseR) {
 						r++;
+						if (r > 254) {
+							r = 0;
+							raiseR = false;
+							raiseG = true;
+						} else if (r < 1) {
+							raiseR = true;
+						}
+					} else if (raiseG) {
 						g++;
+						if (g > 254) {
+							g = 0;
+							raiseG = false;
+							raiseB = true;
+						} else if (g < 1) {
+							raiseG = true;
+						}
+					} else if (raiseB) {
 						b++;
-					} else {
-						r--;
-						g--;
-						b--;
+						if (b > 254) {
+							b = 0;
+							raiseB = false;
+							raiseR = true;
+						} else if (b < 1) {
+							raiseB = true;
+						}
 					}
 				}
 			}
