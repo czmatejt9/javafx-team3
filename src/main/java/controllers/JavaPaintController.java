@@ -98,7 +98,6 @@ public class JavaPaintController {
 		context = canvas.getGraphicsContext2D();
 		Button[] tools_ = { pencilBtn, EraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
 		this.tools = tools_;
-		bindSize();
 		bindZoom();
 		bindMouseXY();
 		getCanvasHeightWidth();
@@ -325,13 +324,6 @@ public class JavaPaintController {
 		});
 	}
 
-	private void bindSize() {
-		ScrollPane.maxHeightProperty().bind(BigAnchor.heightProperty());
-		ScrollPane.maxWidthProperty().bind(BigAnchor.widthProperty());
-		widthTextField.setText((int) canvas.getWidth() + "");
-		heightTextField.setText((int) canvas.getHeight() + "");
-	}
-
 	private void bindZoom() {
 		ScaleSlider.valueProperty().addListener((e) -> {
 			if (!zoomLocked || ScaleSlider.getValue() % 25 == 0) {
@@ -433,8 +425,6 @@ public class JavaPaintController {
 		
 	}
 
-	
-
 	@FXML
 	public void openAbout() {
 		/*
@@ -494,8 +484,7 @@ public class JavaPaintController {
 	@FXML
 	public void changeSize() {
 		lineWidth = Integer
-				.parseInt(selectedSize.getValue().toString().substring(0,
-						selectedSize.getValue().toString().indexOf(" ")));
+				.parseInt(selectedSize.getValue().split(" ")[0]);
 		context.setLineWidth(lineWidth);
 	}
 

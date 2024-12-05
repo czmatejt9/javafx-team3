@@ -339,7 +339,7 @@
                                     <AnchorPane fx:id="CanvasAnchor" prefHeight="400.0" prefWidth="1000.0" style="-fx-background-color: white;">
                                        <children>
                                           <Canvas fx:id="canvas" height="400.0" width="1000.0">
-                        </Canvas>
+                                          </Canvas>
                                        </children>
                                        <effect>
                                           <DropShadow blurType="GAUSSIAN" color="#868484" height="38.93" offsetX="5.0" offsetY="5.0" radius="14.425" width="20.77" />
