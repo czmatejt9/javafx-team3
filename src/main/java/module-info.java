@@ -5,7 +5,6 @@ module JavaPaint {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.prefs;
-    requires org.jfxtras.styles.jmetro;
     requires java.desktop;
     requires javafx.swing;
 

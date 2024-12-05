@@ -25,7 +25,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
@@ -37,8 +36,6 @@ import javafx.stage.Stage;
 
 public class JavaPaintController {
 
-	@FXML
-	ImageView lockUnlock;
 	@FXML
 	Slider ScaleSlider;
 	@FXML
@@ -226,7 +223,6 @@ public class JavaPaintController {
 			if (!compareImages(undoStack.peek().getImage(), (canvas.snapshot(null, null)))) {
 				undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
 				redoStack = new Stack<>();
-				
 			}
 		});
 	}
@@ -337,16 +333,6 @@ public class JavaPaintController {
 	}
 
 	private void bindZoom() {
-		lockUnlock.setOnMouseClicked((e) -> {
-			zoomLocked = !zoomLocked;
-			if (zoomLocked) {
-				lockUnlock.setImage(new Image(getClass().getResourceAsStream("/images/lock20.png")));
-				ScaleSlider.setSnapToTicks(true);
-			} else {
-				lockUnlock.setImage(new Image(getClass().getResourceAsStream("/images/unlock20.png")));
-				ScaleSlider.setSnapToTicks(false);
-			}
-		});
 		ScaleSlider.valueProperty().addListener((e) -> {
 			if (!zoomLocked || ScaleSlider.getValue() % 25 == 0) {
 				zoomLabel.setText((int) (ScaleSlider.getValue()) + "%");
@@ -354,7 +340,6 @@ public class JavaPaintController {
 				group.setScaleX(zoom);
 				group.setScaleY(zoom);
 			}
-
 		});
 
 		canvas.setOnMouseEntered((e) -> BigAnchor.setCursor(cursor));
@@ -419,14 +404,12 @@ public class JavaPaintController {
 	@FXML
 	public void undo() {
 		if (undoStack.size() > 1) {
-			System.out.println(undoStack.size());
 			redoStack.add(undoStack.pop());
 			if (undoStack.peek().DimensionsChanged()) {
 				changeDimensions(undoStack.peek().getWidth(), undoStack.peek().getHeight());
 			}
 			drawFileOnCanvas();
 		}
-		
 	}
 
 	private void drawFileOnCanvas() {
