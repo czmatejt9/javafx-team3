@@ -1,5 +1,5 @@
 module JavaPaint {
-    requires javafx.graphics;
+    requires transitive javafx.graphics;
     requires java.base;
     requires java.logging;
     requires javafx.controls;

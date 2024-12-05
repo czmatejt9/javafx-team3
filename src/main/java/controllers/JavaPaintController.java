@@ -28,7 +28,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -179,9 +178,6 @@ public class JavaPaintController {
 		});
 
 		canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, (e) -> {
-			System.out.println(undoStack.size());
-			System.out.println(redoStack.size());
-			System.out.println("//////////");
 			if (selectedTool.isEmpty())
 				return;
 			if (e.isPrimaryButtonDown()) {
