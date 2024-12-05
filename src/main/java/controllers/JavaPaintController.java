@@ -222,18 +222,19 @@ public class JavaPaintController {
 
 					break;
 				case "rect":
-					gc.drawImage(undoStack.peek().getImage(), 0, 0);
+					drawFileOnCanvas();
 					gc.strokeRect(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
 							Math.abs(e.getX() - prevX), Math.abs(e.getY() - prevY));
 					break;
 				case "roundrect":
-					gc.drawImage(undoStack.peek().getImage(), 0, 0);
+				
+					drawFileOnCanvas();
 					gc.strokeRoundRect(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
 							Math.abs(e.getX() - prevX), Math.abs(e.getY() - prevY),
 							Math.min(Math.abs(e.getX() - prevX) / 5, 50), Math.min(Math.abs(e.getX() - prevX) / 5, 50));
 					break;
 				case "ellipse":
-					gc.drawImage(undoStack.peek().getImage(), 0, 0);
+					drawFileOnCanvas();
 					gc.strokeOval(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
 							Math.abs(e.getX() - prevX), Math.abs(e.getY() - prevY));
 					break;
@@ -457,13 +458,17 @@ public class JavaPaintController {
 			if (undoStack.peek().DimensionsChanged()) {
 				changeDimensions(undoStack.peek().getWidth(), undoStack.peek().getHeight());
 			}
-			if (file == null || undoStack.size() > 1) {
-				gc.drawImage(undoStack.peek().getImage(), 0, 0);
-			} else {
-				canvas.getGraphicsContext2D().drawImage(image, 0, 0);
-			}
+			drawFileOnCanvas();
 		}
 		disableEnableRedoUndo();
+	}
+
+	private void drawFileOnCanvas() {
+		if (file == null || undoStack.size() > 1) {
+			gc.drawImage(undoStack.peek().getImage(), 0, 0);
+		} else {
+			gc.drawImage(image, 0, 0);
+		}
 	}
 
 	@FXML
