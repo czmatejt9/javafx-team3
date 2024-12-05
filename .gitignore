@@ -5,5 +5,8 @@ target/
 .idea/
 *.iml
 
-#vscode
+# vscode
 .vscode
+
+# do not ask
+dont_open.jpg

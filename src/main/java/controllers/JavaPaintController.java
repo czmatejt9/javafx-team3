@@ -27,8 +27,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -326,12 +324,10 @@ public class JavaPaintController {
 
 	private void bindZoom() {
 		ScaleSlider.valueProperty().addListener((e) -> {
-			if (!zoomLocked || ScaleSlider.getValue() % 25 == 0) {
-				zoomLabel.setText((int) (ScaleSlider.getValue()) + "%");
-				double zoom = ScaleSlider.getValue() / 100.0;
-				group.setScaleX(zoom);
-				group.setScaleY(zoom);
-			}
+			zoomLabel.setText((int) (ScaleSlider.getValue()) + "%");
+			double zoom = ScaleSlider.getValue() / 100.0;
+			group.setScaleX(zoom);
+			group.setScaleY(zoom);
 		});
 
 		canvas.setOnMouseEntered((e) -> BigAnchor.setCursor(cursor));
@@ -515,12 +511,4 @@ public class JavaPaintController {
 		group.setScaleX(zoom);
 		group.setScaleY(zoom);
 	}
-
-	@FXML
-	public void checkEscape(KeyEvent e) {
-		if (e.getCode() == KeyCode.ESCAPE) {
-			context.drawImage(undoStack.peek().getImage(), 0, 0);
-		}
-	}
-
 }
