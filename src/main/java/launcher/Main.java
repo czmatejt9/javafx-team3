@@ -24,8 +24,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		// --------------------using FXML--------------------
-		// Parent root =
-		// FXMLLoader.load(getClass().getResource("/views/javaPaint.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/views/javaPaint.fxml"));
 
 		// --------------------using Java--------------------
 		/*
@@ -87,14 +86,14 @@ public class Main extends Application {
 		menuBar.getMenus().addAll(menuFile, menuEdit, menuHelp);
 		vbox1.getChildren().addAll(menuBar);
 		root.getChildren().addAll(vbox1);
-
+*/
 		Scene scene = new Scene(root, 1100, 550);
 
 		stage.setScene(scene);
 		stage.setTitle("javaPaint");
 		stage.setMinWidth(1000);
 		stage.setMinHeight(400);
-		stage.show();*/
+		stage.show();
 	}
 
 	public static void main(String[] args) {

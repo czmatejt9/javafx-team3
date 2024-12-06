@@ -49,6 +49,7 @@
                   <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                </accelerator>
             </MenuItem>
+            <!-- TODO: ALL BELOW-->
             <MenuItem onAction="#generateImage" text="Generate"/>
             <MenuItem onAction="#saveAs" text="Save As"/>
             <SeparatorMenuItem/>
