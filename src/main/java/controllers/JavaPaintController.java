@@ -292,7 +292,6 @@ public class JavaPaintController {
 				if (e.getDeltaY() < 0) {
 					scaleSlider.adjustValue(scaleSlider.getValue() - 25);
 				}
-
 				if (e.getDeltaY() > 0) {
 					scaleSlider.adjustValue(scaleSlider.getValue() + 25);
 				}
