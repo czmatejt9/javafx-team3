@@ -186,8 +186,8 @@
             </Tab>
          </tabs>
       </TabPane>
-      <AnchorPane fx:id="bigAnchor" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgb(238,238,238);" VBox.vgrow="ALWAYS">
-         <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="bigAnchor" style="-fx-background-color: rgb(238,238,238)" VBox.vgrow="ALWAYS">
+         <ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
                <Group>
                   <Group fx:id="group">
