@@ -189,9 +189,18 @@
       <AnchorPane fx:id="bigAnchor" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgb(238,238,238);" VBox.vgrow="ALWAYS">
          <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
-               <AnchorPane fx:id="canvasAnchor" prefHeight="400.0" prefWidth="1000.0" style="-fx-background-color: white">
-                  <Canvas fx:id="canvas" height="400.0" width="1000.0"/>
-               </AnchorPane>
+               <Group>
+                  <Group fx:id="group">
+                     <children>
+                        <AnchorPane fx:id="canvasAnchor" prefHeight="400.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                           <Canvas fx:id="canvas" height="400.0" width="1000.0"/>
+                           <effect>
+                              <DropShadow blurType="GAUSSIAN" color="#868484" height="38.93" offsetX="5.0" offsetY="5.0" radius="14.425" width="20.77" />
+                           </effect>
+                        </AnchorPane>
+                     </children>
+                  </Group>
+               </Group>
             </content>
          </ScrollPane>
       </AnchorPane>

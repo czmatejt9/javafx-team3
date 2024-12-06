@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -76,6 +77,8 @@ public class JavaPaintController {
 	TextField heightTextField;
 	@FXML
 	TextField widthTextField;
+	@FXML
+	Group group;
 
 	boolean zoomLocked = true;
 	Button[] tools;
@@ -95,12 +98,13 @@ public class JavaPaintController {
 		Button[] tools_ = { pencilBtn, eraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
 		this.tools = tools_;
 		bindZoom();
+		bindSize();
 		bindMouseXY();
 		getCanvasHeightWidth();
 		initializePinchZoom();
 		initializeColors();
-		initializeSizes();
-		SetupDrawEvents();
+		initializeBrushSizes();
+		setupDrawEvents();
 		initializeHistory();
 	}
 
@@ -110,7 +114,7 @@ public class JavaPaintController {
 		undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
 	}
 
-	private void SetupDrawEvents() {
+	private void setupDrawEvents() {
 		canvas.setOnMousePressed((e) -> {
 			if (selectedTool.isEmpty())
 				return;
@@ -271,7 +275,7 @@ public class JavaPaintController {
 		}
 	}
 
-	private void initializeSizes() {
+	private void initializeBrushSizes() {
 		ObservableList<String> options = FXCollections.observableArrayList("1 px", "3 px", "5 px", "8 px", "15 px");
 		selectedSize.setItems(options);
 		selectedSize.getSelectionModel().select(2);
@@ -323,12 +327,22 @@ public class JavaPaintController {
 		});
 	}
 
+	private void bindSize() {
+		scrollPane.maxHeightProperty().bind(bigAnchor.heightProperty());
+		scrollPane.maxWidthProperty().bind(bigAnchor.widthProperty());
+		widthTextField.setText((int) canvas.getWidth() + "");
+		heightTextField.setText((int) canvas.getHeight() + "");
+	}
+
+
 	private void bindZoom() {
 		scaleSlider.valueProperty().addListener((e) -> {
 			zoomLabel.setText((int) (scaleSlider.getValue()) + "%");
 			double zoom = scaleSlider.getValue() / 100.0;
 			canvasAnchor.setScaleX(zoom);
 			canvasAnchor.setScaleY(zoom);
+			group.setScaleX(zoom);
+			group.setScaleY(zoom);
 		});
 
 		canvas.setOnMouseEntered((e) -> bigAnchor.setCursor(cursor));
@@ -506,6 +520,8 @@ public class JavaPaintController {
 		double zoom = scaleSlider.getValue() / 100.0;
 		canvasAnchor.setScaleX(zoom);
 		canvasAnchor.setScaleY(zoom);
+		group.setScaleX(zoom);
+		group.setScaleY(zoom);
 	}
 
 	@FXML
