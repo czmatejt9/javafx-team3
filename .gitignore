@@ -8,5 +8,8 @@ target/
 # vscode
 .vscode
 
+# backup css
+src/main/resources/css/
+
 # do not ask
 dont_open.jpg
