@@ -30,189 +30,187 @@
 <?import javafx.scene.text.Font?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.JavaPaintController">
-   <children>
-      <MenuBar>
-         <menus>
-            <Menu text="File">
+   <MenuBar>
+      <menus>
+         <Menu text="File">
+         <items>
+            <MenuItem onAction="#newFile" text="New">
+               <accelerator>
+                  <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+               </accelerator>
+            </MenuItem>
+            <MenuItem onAction="#openFile" text="Open">
+               <accelerator>
+                  <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+               </accelerator>
+            </MenuItem>
+            <MenuItem onAction="#saveFile" text="Save">
+               <accelerator>
+                  <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+               </accelerator>
+            </MenuItem>
+            <MenuItem onAction="#generateImage" text="Generate"/>
+            <MenuItem onAction="#saveAs" text="Save As"/>
+            <SeparatorMenuItem/>
+            <MenuItem text="Settings"/>
+            <MenuItem onAction="#closeApp" text="Close"/>
+         </items>
+         </Menu>
+         <Menu text="Edit">
             <items>
-               <MenuItem onAction="#newFile" text="New">
+               <MenuItem onAction="#undo" text="Undo">
                   <accelerator>
-                     <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                     <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                   </accelerator>
                </MenuItem>
-               <MenuItem onAction="#openFile" text="Open">
+               <MenuItem onAction="#redo" text="Redo">
                   <accelerator>
-                     <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+                     <KeyCodeCombination alt="UP" code="Y" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
                   </accelerator>
                </MenuItem>
-               <MenuItem onAction="#saveFile" text="Save">
-                  <accelerator>
-                     <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
-                  </accelerator>
-               </MenuItem>
-               <MenuItem onAction="#generateImage" text="Generate"/>
-               <MenuItem onAction="#saveAs" text="Save As"/>
-               <SeparatorMenuItem/>
-               <MenuItem text="Settings"/>
-               <MenuItem onAction="#closeApp" text="Close"/>
             </items>
-            </Menu>
-            <Menu text="Edit">
-               <items>
-                  <MenuItem onAction="#undo" text="Undo">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
-                     </accelerator>
-                  </MenuItem>
-                  <MenuItem onAction="#redo" text="Redo">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="Y" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
-                     </accelerator>
-                  </MenuItem>
-               </items>
-            </Menu>
-            <Menu text="Help">
-            <items>
-               <MenuItem onAction="#openAbout" text="About"/>
-            </items>
-            </Menu>
-         </menus>
-      </MenuBar>
-      <TabPane prefHeight="160.0" tabClosingPolicy="UNAVAILABLE">
-         <tabs>
-            <Tab text="Home">
-               <content>
-                  <HBox>
-                     <VBox spacing="20.0">
-                        <padding>
-                           <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
-                        </padding>
-                        <GridPane>
-                           <Button id="pencil" fx:id="pencilBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                           <Button id="eraser" fx:id="eraserBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-                           <Button id="bucket" fx:id="bucketBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                           <Button id="picker" fx:id="pickerBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-                           <ImageView fitHeight="24.0" fitWidth="24.0" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
-                              <image>
-                                 <Image url="@../images/pencil32.png"/>
-                              </image>
-                           </ImageView>
-                           <ImageView fitHeight="24.0" fitWidth="24.0"  GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-                              <image>
-                                 <Image url="@../images/eraser.png"/>
-                              </image>
-                           </ImageView>
-                           <ImageView fitHeight="24.0" fitWidth="24.0" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER">
-                              <image>
-                                 <Image url="@../images/fill.png"/>
-                              </image>
-                           </ImageView>
-                           <ImageView fitHeight="24.0" fitWidth="24.0" GridPane.columnIndex="1"  GridPane.rowIndex="1" GridPane.halignment="CENTER">
-                              <image>
-                                 <Image url="@../images/pipette.png"/>
-                              </image>
-                           </ImageView>
-                        </GridPane>
-                        <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefWidth="130.0" text="Tools" textAlignment="CENTER"/>
-                     </VBox>
-                     <Separator orientation="VERTICAL"/>
-                     <VBox spacing="20.0">
-                        <padding>
-                           <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
-                        </padding>
-                        <GridPane>
-                           <Button id="rect" fx:id="rectBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0"/>
-                           <Button id="roundrect" fx:id="roundRectBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="1"/>
-                           <Button id="ellipse" fx:id="ellipseBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="2"/>
-                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                              <image>
-                                 <Image url="@../images/rectangle.png"/>
-                              </image>
-                           </ImageView>
-                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                              <image>
-                                 <Image url="@../images/rounded-rectangle.png"/>
-                              </image>
-                           </ImageView>
-                           <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                              <image>
-                                 <Image url="@../images/ellipse-outline-shape-variant.png"/>
-                              </image>
-                           </ImageView>
-                        </GridPane>
-                        <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefWidth="180.0" text="Shapes" textAlignment="CENTER"/>
-                     </VBox>
-                     <Separator orientation="VERTICAL"/>
-                     <VBox>
-                     <!-- TODO: special tools (inverion, black & white filter, generate image...)-->
-                     </VBox>
-                     <Separator orientation="VERTICAL"/>
-                     <VBox>
-                        <padding>
-                           <Insets top="10.0"/>
-                        </padding>
-                        <HBox spacing="20.0">
-                           <VBox alignment="TOP_CENTER" prefHeight="80.0" prefWidth="80.0" spacing="6.0">
-                              <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/width.png"/>
-                                 </image>
-                              </ImageView>
-                              <ComboBox fx:id="selectedSize" onAction="#changeSize" prefHeight="25.0" prefWidth="70.0"/>
-                           </VBox>
-                           <VBox prefHeight="80.0" prefWidth="140.0" spacing="10.0">
-                              <ColorPicker fx:id="colorPicker1" onAction="#changeColor1"/>
-                              <ColorPicker fx:id="colorPicker2" onAction="#changeColor2"/>
-                           </VBox>
-                        </HBox>
-                        <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefWidth="200.0" text="Customizations" textAlignment="CENTER"/>
-                     </VBox>
-                  </HBox>
-               </content>
-            </Tab>
-            <Tab text="Canvas">
-               <content>
-               <VBox>
-                  <GridPane>
-                     <Label text="Width" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                     <TextField fx:id="widthTextField" GridPane.rowIndex="1" GridPane.columnIndex="0"/> 
-                     <Label text="Height" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-                     <TextField fx:id="heightTextField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-                     <Button onAction="#changeDimensions" text="Change" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                  </GridPane>
-                  <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefWidth="191.0" text="Dimensions" textAlignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-               </VBox>
-               </content>
-            </Tab>
-         </tabs>
-      </TabPane>
-      <AnchorPane fx:id="bigAnchor" style="-fx-background-color: rgb(238,238,238)" VBox.vgrow="ALWAYS">
-         <ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         </Menu>
+         <Menu text="Help">
+         <items>
+            <MenuItem onAction="#openAbout" text="About"/>
+         </items>
+         </Menu>
+      </menus>
+   </MenuBar>
+   <TabPane prefHeight="160.0" tabClosingPolicy="UNAVAILABLE">
+      <tabs>
+         <Tab text="Home">
             <content>
-               <Group>
-                  <Group fx:id="group">
-                     <children>
-                        <AnchorPane fx:id="canvasAnchor" prefHeight="400.0" prefWidth="1000.0" style="-fx-background-color: white;">
-                           <Canvas fx:id="canvas" height="400.0" width="1000.0"/>
-                           <effect>
-                              <DropShadow blurType="GAUSSIAN" color="#868484" height="38.93" offsetX="5.0" offsetY="5.0" radius="14.425" width="20.77" />
-                           </effect>
-                        </AnchorPane>
-                     </children>
-                  </Group>
-               </Group>
+               <HBox>
+                  <VBox spacing="20.0">
+                     <padding>
+                        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                     </padding>
+                     <GridPane>
+                        <Button id="pencil" fx:id="pencilBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <Button id="eraser" fx:id="eraserBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Button id="bucket" fx:id="bucketBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <Button id="picker" fx:id="pickerBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                           <image>
+                              <Image url="@../images/pencil32.png"/>
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0"  GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                           <image>
+                              <Image url="@../images/eraser.png"/>
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+                           <image>
+                              <Image url="@../images/fill.png"/>
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" GridPane.columnIndex="1"  GridPane.rowIndex="1" GridPane.halignment="CENTER">
+                           <image>
+                              <Image url="@../images/pipette.png"/>
+                           </image>
+                        </ImageView>
+                     </GridPane>
+                     <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefWidth="130.0" text="Tools" textAlignment="CENTER"/>
+                  </VBox>
+                  <Separator orientation="VERTICAL"/>
+                  <VBox spacing="20.0">
+                     <padding>
+                        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                     </padding>
+                     <GridPane>
+                        <Button id="rect" fx:id="rectBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0"/>
+                        <Button id="roundrect" fx:id="roundRectBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="1"/>
+                        <Button id="ellipse" fx:id="ellipseBtn" onMouseClicked="#selectTool" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="2"/>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <image>
+                              <Image url="@../images/rectangle.png"/>
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <image>
+                              <Image url="@../images/rounded-rectangle.png"/>
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <image>
+                              <Image url="@../images/ellipse-outline-shape-variant.png"/>
+                           </image>
+                        </ImageView>
+                     </GridPane>
+                     <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefWidth="180.0" text="Shapes" textAlignment="CENTER"/>
+                  </VBox>
+                  <Separator orientation="VERTICAL"/>
+                  <VBox>
+                  <!-- TODO: special tools (inverion, black & white filter, generate image...)-->
+                  </VBox>
+                  <Separator orientation="VERTICAL"/>
+                  <VBox>
+                     <padding>
+                        <Insets top="10.0"/>
+                     </padding>
+                     <HBox spacing="20.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="80.0" prefWidth="80.0" spacing="6.0">
+                           <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@../images/width.png"/>
+                              </image>
+                           </ImageView>
+                           <ComboBox fx:id="selectedSize" onAction="#changeSize" prefHeight="25.0" prefWidth="70.0"/>
+                        </VBox>
+                        <VBox prefHeight="80.0" prefWidth="140.0" spacing="10.0">
+                           <ColorPicker fx:id="colorPicker1" onAction="#changeColor1"/>
+                           <ColorPicker fx:id="colorPicker2" onAction="#changeColor2"/>
+                        </VBox>
+                     </HBox>
+                     <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefWidth="200.0" text="Customizations" textAlignment="CENTER"/>
+                  </VBox>
+               </HBox>
             </content>
-         </ScrollPane>
-      </AnchorPane>
-      <GridPane alignment="BASELINE_CENTER" snapToPixel="false" style="-fx-background-color: rgb(240,242,243);" hgap="50.0">
-         <padding>
-            <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
-         </padding>
-         <Label fx:id="pixelXY" text="0, 0" prefWidth="100.0"/>
-         <Label fx:id="projectName" text="Not Saved yet" GridPane.columnIndex="1" prefWidth="100.0"/>
-         <Label fx:id="canvasWidthHeight" text="Width, Height" GridPane.columnIndex="2" prefWidth="100.0"/>
-         <Label fx:id="zoomLabel" text="100%" GridPane.columnIndex="3" GridPane.valignment="CENTER" prefWidth="100.0"/>
-         <Slider fx:id="scaleSlider" max="800.0" maxWidth="100.0" min="25.0" prefWidth="200.0" value="100.0" GridPane.columnIndex="4" GridPane.hgrow="NEVER" GridPane.valignment="CENTER"/>
-      </GridPane>
-   </children>
+         </Tab>
+         <Tab text="Canvas">
+            <content>
+            <VBox>
+               <GridPane>
+                  <Label text="Width" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                  <TextField fx:id="widthTextField" GridPane.rowIndex="1" GridPane.columnIndex="0"/> 
+                  <Label text="Height" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                  <TextField fx:id="heightTextField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                  <Button onAction="#changeDimensions" text="Change" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+               </GridPane>
+               <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefWidth="191.0" text="Dimensions" textAlignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            </VBox>
+            </content>
+         </Tab>
+      </tabs>
+   </TabPane>
+   <AnchorPane fx:id="bigAnchor" style="-fx-background-color: rgb(238,238,238)" VBox.vgrow="ALWAYS">
+      <ScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <Group>
+               <Group fx:id="group">
+                  <children>
+                     <AnchorPane fx:id="canvasAnchor" prefHeight="400.0" prefWidth="1000.0" style="-fx-background-color: white;">
+                        <Canvas fx:id="canvas" height="400.0" width="1000.0"/>
+                        <effect>
+                           <DropShadow blurType="GAUSSIAN" color="#868484" height="38.93" offsetX="5.0" offsetY="5.0" radius="14.425" width="20.77" />
+                        </effect>
+                     </AnchorPane>
+                  </children>
+               </Group>
+            </Group>
+         </content>
+      </ScrollPane>
+   </AnchorPane>
+   <GridPane alignment="BASELINE_CENTER" snapToPixel="false" style="-fx-background-color: rgb(240,242,243);" hgap="50.0">
+      <padding>
+         <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+      </padding>
+      <Label fx:id="pixelXY" text="0, 0" prefWidth="100.0"/>
+      <Label fx:id="projectName" text="Not Saved yet" GridPane.columnIndex="1" prefWidth="100.0"/>
+      <Label fx:id="canvasWidthHeight" text="Width, Height" GridPane.columnIndex="2" prefWidth="100.0"/>
+      <Label fx:id="zoomLabel" text="100%" GridPane.columnIndex="3" GridPane.valignment="CENTER" prefWidth="100.0"/>
+      <Slider fx:id="scaleSlider" max="800.0" maxWidth="100.0" min="25.0" prefWidth="200.0" value="100.0" GridPane.columnIndex="4" GridPane.hgrow="NEVER" GridPane.valignment="CENTER"/>
+   </GridPane>
 </VBox>
