@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.javafx_team3</groupId>
-    <artifactId>JavaPaint</artifactId>
+    <artifactId>jabaPaint</artifactId>
     <version>11.0.1</version>
 
     <properties>
@@ -58,7 +58,7 @@
             <artifactId>javafx-maven-plugin</artifactId>
             <version>0.0.6</version>
             <configuration>
-                <launcher>JavaPaint</launcher>
+                <launcher>jabaPaint</launcher>
                 <mainClass>launcher.Main</mainClass>
                 <!--for building for cross platform include the platform jdk below (/Contents/Home/jmods)-->
 <!--                <jmodsPath>-->

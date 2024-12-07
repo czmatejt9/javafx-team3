@@ -33,7 +33,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class JavaPaintController {
+public class jabaPaintController {
 
 	@FXML
 	Slider scaleSlider;
@@ -397,11 +397,6 @@ public class JavaPaintController {
 			projectName.setText(f.getName());
 			file = f;
 		}
-	}
-
-	@FXML
-	public void closeApp() {
-		System.exit(0);
 	}
 
 	@FXML

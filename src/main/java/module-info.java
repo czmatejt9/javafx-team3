@@ -1,4 +1,4 @@
-module JavaPaint {
+module jabaPaint {
     requires transitive javafx.graphics;
     requires java.base;
     requires java.logging;
