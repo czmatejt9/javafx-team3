@@ -139,7 +139,6 @@
                      <Label alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefWidth="180.0" text="Shapes" textAlignment="CENTER"/>
                   </VBox>
                   <Separator orientation="VERTICAL"/>
-            <!-- TODO: ALL BELOW-->
                   <VBox>
                   <!-- TODO: special tools (inverion, black & white filter, generate image...)-->
                   </VBox>
