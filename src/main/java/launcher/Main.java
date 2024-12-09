@@ -981,7 +981,6 @@ public class Main extends Application {
 			for (int x = 0; x < canvas.getWidth(); x++) {
 				for (int y = 0; y < canvas.getHeight(); y++) {
 					pxw.setColor(x, y, Color.rgb(r, g, b, 1.0));
-					
 					if (raiseR) {
 						r++;
 						if (r > 254) {
