@@ -80,7 +80,6 @@ public class jabaPaintController {
 	@FXML
 	Group group;
 
-	boolean zoomLocked = true;
 	Button[] tools;
 	Cursor cursor;
 	String selectedTool = "";
@@ -94,7 +93,7 @@ public class jabaPaintController {
 	Image image = null;
 
 	public void initialize() {
-		context = canvas.getGraphicsContext2D();
+		GraphicsContext context = canvas.getGraphicsContext2D();
 		Button[] tools_ = { pencilBtn, eraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
 		this.tools = tools_;
 		bindZoom();

@@ -1,14 +1,18 @@
 package launcher;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
-import java.awt.Desktop;
+
 import classes.CanvasHistory;
 import classes.ImageFxIO;
 import classes.PixelXY;
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -32,8 +36,8 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -52,9 +56,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
-import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -847,16 +848,20 @@ public class Main extends Application {
 		cursor = new ImageCursor();
 		switch (id) {
 			case "pencil":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pencil32.png")));
+				Image image = new Image(getClass().getResourceAsStream("/images/pencil32.png"));
+				cursor = new ImageCursor(image, 0, image.getHeight());
 				break;
 			case "eraser":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/eraser32.png")));
+				Image image2 = new Image(getClass().getResourceAsStream("/images/eraser32.png"));
+				cursor = new ImageCursor(image2, 0, image2.getHeight());
 				break;
 			case "bucket":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/fill32.png")));
+				Image image3 = new Image(getClass().getResourceAsStream("/images/fill32.png"));
+				cursor = new ImageCursor(image3, 0, image3.getHeight());
 				break;
 			case "picker":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pipette32.png")));
+				Image image4 = new Image(getClass().getResourceAsStream("/images/pipette32.png"));
+				cursor = new ImageCursor(image4, 0, image4.getHeight());
 				break;
 			default:
 				cursor = Cursor.CROSSHAIR;
