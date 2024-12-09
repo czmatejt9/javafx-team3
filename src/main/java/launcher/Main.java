@@ -876,11 +876,11 @@ public class Main extends Application {
 	}
 
 	private void changeColor1() {
-		//color1 = colorPicker1.getValue();
+		color1 = colorPicker1.getValue();
 	}
 
 	private void changeColor2() {
-		// color2 = colorPicker2.getValue();
+		color2 = colorPicker2.getValue();
 	}
 
 	static private boolean compareImages(Image im1, Image im2) {
