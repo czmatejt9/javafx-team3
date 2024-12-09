@@ -2,7 +2,6 @@ package controllers;
 
 // import java.awt.Desktop;
 import java.io.File;
-// import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -26,23 +25,18 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcType;
 import javafx.stage.Stage;
 
-public class JavaPaintController {
+public class jabaPaintController {
 
 	@FXML
-	ImageView lockUnlock;
-	@FXML
-	Slider ScaleSlider;
+	Slider scaleSlider;
 	@FXML
 	Label pixelXY;
 	@FXML
@@ -50,23 +44,19 @@ public class JavaPaintController {
 	@FXML
 	Label canvasWidthHeight;
 	@FXML
-	AnchorPane CanvasAnchor;
+	AnchorPane canvasAnchor;
 	@FXML
 	Canvas canvas;
 	@FXML
-	AnchorPane BigAnchor;
+	AnchorPane bigAnchor;
 	@FXML
-	ScrollPane ScrollPane;
+	ScrollPane scrollPane;
 	@FXML
 	Label zoomLabel;
 	@FXML
-	Group group;
-	@FXML
 	Button pencilBtn;
 	@FXML
-	Button brushBtn;
-	@FXML
-	Button EraserBtn;
+	Button eraserBtn;
 	@FXML
 	Button bucketBtn;
 	@FXML
@@ -84,19 +74,17 @@ public class JavaPaintController {
 	@FXML
 	ColorPicker colorPicker2;
 	@FXML
-	Button undoBtn;
-	@FXML
-	Button redoBtn;
-	@FXML
 	TextField heightTextField;
 	@FXML
 	TextField widthTextField;
+	@FXML
+	Group group;
 
 	boolean zoomLocked = true;
 	Button[] tools;
 	Cursor cursor;
 	String selectedTool = "";
-	GraphicsContext gc;
+	GraphicsContext context;
 	double prevX, prevY;
 	Stack<CanvasHistory> undoStack;
 	Stack<CanvasHistory> redoStack;
@@ -106,19 +94,18 @@ public class JavaPaintController {
 	Image image = null;
 
 	public void initialize() {
-		gc = canvas.getGraphicsContext2D();
-		Button[] tools_ = { pencilBtn, brushBtn, EraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
+		context = canvas.getGraphicsContext2D();
+		Button[] tools_ = { pencilBtn, eraserBtn, bucketBtn, pickerBtn, rectBtn, roundRectBtn, ellipseBtn };
 		this.tools = tools_;
-		bindSize();
 		bindZoom();
+		bindSize();
 		bindMouseXY();
 		getCanvasHeightWidth();
 		initializePinchZoom();
 		initializeColors();
-		initializeSizes();
-		SetupDrawEvents();
+		initializeBrushSizes();
+		setupDrawEvents();
 		initializeHistory();
-		disableEnableRedoUndo();
 	}
 
 	private void initializeHistory() {
@@ -127,35 +114,30 @@ public class JavaPaintController {
 		undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
 	}
 
-	private void SetupDrawEvents() {
+	private void setupDrawEvents() {
 		canvas.setOnMousePressed((e) -> {
 			if (selectedTool.isEmpty())
 				return;
 			if (e.isPrimaryButtonDown()) {
-				gc.setFill(color1);
-				gc.setStroke(color1);
+				context.setFill(color1);
+				context.setStroke(color1);
 			}
 			if (e.isSecondaryButtonDown()) {
-				gc.setFill(color2);
-				gc.setStroke(color2);
+				context.setFill(color2);
+				context.setStroke(color2);
 			}
 			switch (selectedTool) {
 				case "pencil":
 					prevX = e.getX();
 					prevY = e.getY();
-					gc.strokeLine(prevX, prevY, prevX, prevY);
-					break;
-				case "brush":
-					prevX = e.getX();
-					prevY = e.getY();
-					gc.fillArc(e.getX() - lineWidth, e.getY() - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
+					context.strokeLine(prevX, prevY, prevX, prevY);
 					break;
 				case "eraser":
 					prevX = e.getX();
 					prevY = e.getY();
-					gc.setFill(Color.WHITE);
-					gc.setStroke(Color.WHITE);
-					gc.fillRect(e.getX(), e.getY(), lineWidth, lineWidth);
+					context.setFill(Color.WHITE);
+					context.setStroke(Color.WHITE);
+					context.fillRect(e.getX(), e.getY(), lineWidth, lineWidth);
 					break;
 				case "bucket":
 					if (e.isPrimaryButtonDown())
@@ -181,33 +163,24 @@ public class JavaPaintController {
 			if (selectedTool.isEmpty())
 				return;
 			if (e.isPrimaryButtonDown()) {
-				gc.setFill(color1);
-				gc.setStroke(color1);
+				context.setFill(color1);
+				context.setStroke(color1);
 			}
 			if (e.isSecondaryButtonDown()) {
-				gc.setFill(color2);
-				gc.setStroke(color2);
+				context.setFill(color2);
+				context.setStroke(color2);
 			}
 
 			switch (selectedTool) {
 				case "pencil":
-					gc.strokeLine(prevX, prevY, e.getX(), e.getY());
-					prevX = e.getX();
-					prevY = e.getY();
-					break;
-				case "brush":
-					if (Math.abs(e.getX() - prevX) > Math.max(lineWidth / 2, 1)
-							|| Math.abs(e.getY() - prevY) > Math.max(lineWidth / 2, 1)) {
-						drawExtraPoints(prevX, prevY, e.getX(), e.getY());
-					}
-					gc.fillArc(e.getX() - lineWidth, e.getY() - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
+					context.strokeLine(prevX, prevY, e.getX(), e.getY());
 					prevX = e.getX();
 					prevY = e.getY();
 					break;
 				case "eraser":
-					gc.setFill(Color.WHITE);
-					gc.setStroke(Color.WHITE);
-					gc.fillRect(e.getX(), e.getY(), lineWidth, lineWidth);
+					context.setFill(Color.WHITE);
+					context.setStroke(Color.WHITE);
+					context.fillRect(e.getX(), e.getY(), lineWidth, lineWidth);
 					if (Math.abs(e.getX() - prevX) > Math.max(lineWidth / 2, 1)
 							|| Math.abs(e.getY() - prevY) > Math.max(lineWidth / 2, 1)) {
 						deleteExtraPoints(prevX, prevY, e.getX(), e.getY());
@@ -223,19 +196,19 @@ public class JavaPaintController {
 					break;
 				case "rect":
 					drawFileOnCanvas();
-					gc.strokeRect(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
+					context.strokeRect(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
 							Math.abs(e.getX() - prevX), Math.abs(e.getY() - prevY));
 					break;
 				case "roundrect":
 				
 					drawFileOnCanvas();
-					gc.strokeRoundRect(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
+					context.strokeRoundRect(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
 							Math.abs(e.getX() - prevX), Math.abs(e.getY() - prevY),
 							Math.min(Math.abs(e.getX() - prevX) / 5, 50), Math.min(Math.abs(e.getX() - prevX) / 5, 50));
 					break;
 				case "ellipse":
 					drawFileOnCanvas();
-					gc.strokeOval(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
+					context.strokeOval(Math.min(prevX, e.getX()), Math.min(prevY, e.getY()),
 							Math.abs(e.getX() - prevX), Math.abs(e.getY() - prevY));
 					break;
 				default:
@@ -248,7 +221,6 @@ public class JavaPaintController {
 			if (!compareImages(undoStack.peek().getImage(), (canvas.snapshot(null, null)))) {
 				undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
 				redoStack = new Stack<>();
-				disableEnableRedoUndo();
 			}
 		});
 	}
@@ -265,12 +237,13 @@ public class JavaPaintController {
 				snapshot.getPixelWriter().setColor(currentPixel.getX(), currentPixel.getY(), fillColor);
 				ArrayList<PixelXY> neighbors = getPixelNeighbors(currentPixel.getX(), currentPixel.getY(), snapshot);
 				for (PixelXY neighbor : neighbors) {
-					if (pixelReader.getColor(neighbor.getX(), neighbor.getY()).equals(pixelColor))
+					if (pixelReader.getColor(neighbor.getX(), neighbor.getY()).equals(pixelColor)) {
 						queue.addLast(neighbor);
+					}
 				}
 			}
 		}
-		gc.drawImage(snapshot, 0, 0);
+		context.drawImage(snapshot, 0, 0);
 	}
 
 	private ArrayList<PixelXY> getPixelNeighbors(int x, int y, WritableImage image) {
@@ -287,34 +260,22 @@ public class JavaPaintController {
 		return neighbors;
 	}
 
-	private void drawExtraPoints(double prevX, double prevY, double x, double y) {
-		if (Math.abs(x - prevX) > Math.max(lineWidth / 2, 1) || Math.abs(y - prevY) > Math.max(lineWidth / 2, 1)) {
-			double midx = (int) ((x + prevX) / 2);
-			double midy = (int) ((y + prevY) / 2);
-
-			gc.fillArc(midx - lineWidth, midy - lineWidth, lineWidth, lineWidth, 0, 360, ArcType.ROUND);
-
-			drawExtraPoints(prevX, prevY, midx, midy);
-			drawExtraPoints(midx, midy, x, y);
-		}
-	}
-
 	private void deleteExtraPoints(double prevX, double prevY, double x, double y) {
 		if (Math.abs(x - prevX) > Math.max(lineWidth / 2, 1) || Math.abs(y - prevY) > Math.max(lineWidth / 2, 1)) {
 
 			double midx = (int) ((x + prevX) / 2);
 			double midy = (int) ((y + prevY) / 2);
 
-			gc.setFill(Color.WHITE);
-			gc.setStroke(Color.WHITE);
-			gc.fillRect(midx, midy, lineWidth, lineWidth);
+			context.setFill(Color.WHITE);
+			context.setStroke(Color.WHITE);
+			context.fillRect(midx, midy, lineWidth, lineWidth);
 
 			deleteExtraPoints(prevX, prevY, midx, midy);
 			deleteExtraPoints(midx, midy, x, y);
 		}
 	}
 
-	private void initializeSizes() {
+	private void initializeBrushSizes() {
 		ObservableList<String> options = FXCollections.observableArrayList("1 px", "3 px", "5 px", "8 px", "15 px");
 		selectedSize.setItems(options);
 		selectedSize.getSelectionModel().select(2);
@@ -330,22 +291,25 @@ public class JavaPaintController {
 	}
 
 	private void initializePinchZoom() {
-		BigAnchor.setOnScroll((e) -> {
+		bigAnchor.setOnScroll((e) -> {
 			if (e.isControlDown()) {
-				if (e.getDeltaY() < 0)
-					ScaleSlider.adjustValue(ScaleSlider.getValue() - 25);
-
-				if (e.getDeltaY() > 0)
-					ScaleSlider.adjustValue(ScaleSlider.getValue() + 25);
+				if (e.getDeltaY() < 0) {
+					scaleSlider.adjustValue(scaleSlider.getValue() - 25);
+				}
+				if (e.getDeltaY() > 0) {
+					scaleSlider.adjustValue(scaleSlider.getValue() + 25);
+				}
 			}
 		});
-		CanvasAnchor.setOnScroll((e) -> {
+		canvasAnchor.setOnScroll((e) -> {
 			if (e.isControlDown()) {
-				e.consume(); // prevent scrolling while zooming
-				if (e.getDeltaY() < 0)
-					ScaleSlider.adjustValue(ScaleSlider.getValue() - 25);
-				if (e.getDeltaY() > 0)
-					ScaleSlider.adjustValue(ScaleSlider.getValue() + 25);
+				e.consume();
+				if (e.getDeltaY() < 0) {
+					scaleSlider.adjustValue(scaleSlider.getValue() - 25);
+				}
+				if (e.getDeltaY() > 0) {
+					scaleSlider.adjustValue(scaleSlider.getValue() + 25);
+				}
 			}
 		});
 	}
@@ -356,72 +320,62 @@ public class JavaPaintController {
 
 	private void bindMouseXY() {
 		canvas.setOnMouseMoved((e) -> {
-			pixelXY.setText((int) e.getX() + ", " + (int) e.getY());
+			pixelXY.setText((int) (e.getX() + 1) + ", " + (int) (e.getY() + 1));
 		});
 		canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, (e) -> {
-			pixelXY.setText((int) e.getX() + ", " + (int) e.getY());
+			pixelXY.setText((int) (e.getX() + 1) + ", " + (int) (e.getY() + 1));
 		});
 	}
 
 	private void bindSize() {
-		ScrollPane.maxHeightProperty().bind(BigAnchor.heightProperty());
-		ScrollPane.maxWidthProperty().bind(BigAnchor.widthProperty());
+		scrollPane.maxHeightProperty().bind(bigAnchor.heightProperty());
+		scrollPane.maxWidthProperty().bind(bigAnchor.widthProperty());
 		widthTextField.setText((int) canvas.getWidth() + "");
 		heightTextField.setText((int) canvas.getHeight() + "");
 	}
 
+
 	private void bindZoom() {
-		lockUnlock.setOnMouseClicked((e) -> {
-			zoomLocked = !zoomLocked;
-			if (zoomLocked) {
-				lockUnlock.setImage(new Image(getClass().getResourceAsStream("/images/lock20.png")));
-				ScaleSlider.setSnapToTicks(true);
-			} else {
-				lockUnlock.setImage(new Image(getClass().getResourceAsStream("/images/unlock20.png")));
-				ScaleSlider.setSnapToTicks(false);
-			}
-		});
-		ScaleSlider.valueProperty().addListener((e) -> {
-			if (!zoomLocked || ScaleSlider.getValue() % 25 == 0) {
-				zoomLabel.setText((int) (ScaleSlider.getValue()) + "%");
-				double zoom = ScaleSlider.getValue() / 100.0;
-				group.setScaleX(zoom);
-				group.setScaleY(zoom);
-			}
-
+		scaleSlider.valueProperty().addListener((e) -> {
+			zoomLabel.setText((int) (scaleSlider.getValue()) + "%");
+			double zoom = scaleSlider.getValue() / 100.0;
+			canvasAnchor.setScaleX(zoom);
+			canvasAnchor.setScaleY(zoom);
+			group.setScaleX(zoom);
+			group.setScaleY(zoom);
 		});
 
-		canvas.setOnMouseEntered((e) -> BigAnchor.setCursor(cursor));
-		canvas.setOnMouseExited((e) -> BigAnchor.setCursor(Cursor.DEFAULT));
+		canvas.setOnMouseEntered((e) -> bigAnchor.setCursor(cursor));
+		canvas.setOnMouseExited((e) -> bigAnchor.setCursor(Cursor.DEFAULT));
 	}
 
 	@FXML
 	public void openFile() {
-		ImageFxIO loader = new ImageFxIO((Stage) BigAnchor.getScene().getWindow());
+		ImageFxIO loader = new ImageFxIO((Stage) bigAnchor.getScene().getWindow());
 		Object[] result = loader.openFromFile();
-		if (result == null)return;
+		if (result == null) return;
 		image = (Image) result[0];
 		File f = (File) result[1];
 		int w = (int) image.getWidth();
 		int h = (int) image.getHeight();
 		canvas.setHeight(h);
 		canvas.setWidth(w);
-		CanvasAnchor.setPrefHeight(h);
-		CanvasAnchor.setPrefWidth(w);
+		canvasAnchor.setPrefHeight(h);
+		canvasAnchor.setPrefWidth(w);
 		getCanvasHeightWidth();
 
 		initializeHistory();
-		disableEnableRedoUndo();
+		
 		initializeColors();
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		gc.drawImage(image, 0, 0);
+		context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		context.drawImage(image, 0, 0);
 		file = f;
 		projectName.setText(file.getName());
 	}
 
 	@FXML
 	public void saveFile() {
-		ImageFxIO saver = new ImageFxIO((Stage) BigAnchor.getScene().getWindow());
+		ImageFxIO saver = new ImageFxIO((Stage) bigAnchor.getScene().getWindow());
 		Image image = canvas.snapshot(null, null);
 		if (file == null) {
 			File f = saver.saveToFile(image);
@@ -436,38 +390,28 @@ public class JavaPaintController {
 
 	@FXML
 	public void saveAs() {
-		ImageFxIO saver = new ImageFxIO((Stage) BigAnchor.getScene().getWindow());
+		ImageFxIO saver = new ImageFxIO((Stage) bigAnchor.getScene().getWindow());
 		Image image = canvas.snapshot(null, null);
 		File f = saver.saveToFile(image);
 		if (f != null) {
 			projectName.setText(f.getName());
 			file = f;
 		}
-
-	}
-
-	@FXML
-	public void closeApp() {
-		System.exit(0);
 	}
 
 	@FXML
 	public void undo() {
-		if (!undoStack.empty()) {
+		if (undoStack.size() > 1) {
 			redoStack.add(undoStack.pop());
-			if (undoStack.peek().DimensionsChanged()) {
-				changeDimensions(undoStack.peek().getWidth(), undoStack.peek().getHeight());
-			}
 			drawFileOnCanvas();
 		}
-		disableEnableRedoUndo();
 	}
 
 	private void drawFileOnCanvas() {
 		if (file == null || undoStack.size() > 1) {
-			gc.drawImage(undoStack.peek().getImage(), 0, 0);
+			context.drawImage(undoStack.peek().getImage(), 0, 0);
 		} else {
-			gc.drawImage(image, 0, 0);
+			context.drawImage(image, 0, 0);
 		}
 	}
 
@@ -476,17 +420,9 @@ public class JavaPaintController {
 		if (!redoStack.empty()) {
 			undoStack.add(redoStack.peek());
 			CanvasHistory canvasHistory = redoStack.pop();
-			if (canvasHistory.DimensionsChanged()) {
-				changeDimensions(canvasHistory.getWidth(), canvasHistory.getHeight());
-			}
-			gc.drawImage(canvasHistory.getImage(), 0, 0);
+			context.drawImage(canvasHistory.getImage(), 0, 0);
 		}
-		disableEnableRedoUndo();
-	}
-
-	public void disableEnableRedoUndo() {
-		redoBtn.setDisable(redoStack.isEmpty());
-		undoBtn.setDisable(undoStack.size() < 2);
+		
 	}
 
 	@FXML
@@ -502,11 +438,10 @@ public class JavaPaintController {
 
 	@FXML
 	public void newFile() {
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		projectName.setText("Not Saved yet");
 		file = null;
 		initializeHistory();
-		disableEnableRedoUndo();
 	}
 
 	@FXML
@@ -523,38 +458,28 @@ public class JavaPaintController {
 		cursor = new ImageCursor();
 		switch (id) {
 			case "pencil":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pencil32.png")),
-						0, 32);
-				break;
-			case "brush":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/paintbrush32.png")),
-						6, 27);
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pencil32.png")));
 				break;
 			case "eraser":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/eraser32.png")),
-						10, 30);
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/eraser32.png")));
 				break;
 			case "bucket":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/fill32.png")),
-						3, 28);
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/fill32.png")));
 				break;
 			case "picker":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pipette32.png")),
-						4, 29);
+				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pipette32.png")));
 				break;
 			default:
 				cursor = Cursor.CROSSHAIR;
 				break;
 		}
-
 	}
 
 	@FXML
 	public void changeSize() {
 		lineWidth = Integer
-				.parseInt(selectedSize.getValue().toString().substring(0,
-						selectedSize.getValue().toString().indexOf(" ")));
-		gc.setLineWidth(lineWidth);
+				.parseInt(selectedSize.getValue().split(" ")[0]);
+		context.setLineWidth(lineWidth);
 	}
 
 	@FXML
@@ -568,70 +493,112 @@ public class JavaPaintController {
 	}
 
 	static public boolean compareImages(Image im1, Image im2) {
-		for (int i = 0; i < im1.getWidth(); i++) {
-			for (int j = 0; j < im1.getHeight(); j++) {
-				if (!im1.getPixelReader().getColor(i, j).equals(im2.getPixelReader().getColor(i, j)))
+		for (int x = 0; x < im1.getWidth(); x++) {
+			for (int y = 0; y < im1.getHeight(); y++) {
+				if (!im1.getPixelReader().getColor(x, y).equals(im2.getPixelReader().getColor(x, y))) {
 					return false;
+				}
 			}
 		}
 		return true;
 	}
 
 	@FXML
-	public void discardDimensions() {
-		widthTextField.setText((int) canvas.getWidth() + "");
-		heightTextField.setText((int) canvas.getHeight() + "");
-	}
-
-	@FXML
-	public void applyDimensions() {
+	public void changeDimensions() {
 		int w = Integer.parseInt(widthTextField.getText());
 		int h = Integer.parseInt(heightTextField.getText());
-		if (w < 1 || h < 1) {
-			widthTextField.setText((int) canvas.getWidth() + "");
-			heightTextField.setText((int) canvas.getHeight() + "");
-			return;
-		}
-
-		undoStack.add(new CanvasHistory((int) canvas.getWidth(), (int) canvas.getHeight(),
-				undoStack.pop().getImage()));
-
-		changeDimensions(w, h);
-
-		undoStack.add(new CanvasHistory((int) canvas.getWidth(), (int) canvas.getHeight(),
-				canvas.snapshot(null, null)));
-		disableEnableRedoUndo();
-	}
-
-	private void changeDimensions(int w, int h) {
-		try {
-			canvas.setHeight(h);
-			canvas.setWidth(w);
-			CanvasAnchor.setPrefHeight(h);
-			CanvasAnchor.setPrefWidth(w);
-			getCanvasHeightWidth();
-			double zoom = ScaleSlider.getValue() / 100.0;
-			group.setScaleX(zoom + 0.01);
-			group.setScaleY(zoom + 0.01);
-			Thread.sleep(1);
-			group.setScaleX(zoom);
-			group.setScaleY(zoom);
-		} catch (InterruptedException e) {
-			widthTextField.setText((int) canvas.getWidth() + "");
-			heightTextField.setText((int) canvas.getHeight() + "");
-		}
+		canvas.setHeight(h);
+		canvas.setWidth(w);
+		canvasAnchor.setPrefHeight(h);
+		canvasAnchor.setPrefWidth(w);
+		getCanvasHeightWidth();
+		double zoom = scaleSlider.getValue() / 100.0;
+		canvasAnchor.setScaleX(zoom);
+		canvasAnchor.setScaleY(zoom);
+		group.setScaleX(zoom);
+		group.setScaleY(zoom);
 	}
 
 	@FXML
-	public void exitedCanvasTab() {
-		discardDimensions();
-	}
-
-	@FXML
-	public void checkEscape(KeyEvent e) {
-		if (e.getCode() == KeyCode.ESCAPE) {
-			gc.drawImage(undoStack.peek().getImage(), 0, 0);
+	public void generateImage() {
+		newFile();
+		PixelWriter pxw = context.getPixelWriter();
+		boolean raiseR = true;
+		boolean raiseG = false;
+		boolean raiseB = false;
+		int r = 0;
+		int g = 0;
+		int b = 0;
+		if (canvas.getHeight() >= canvas.getWidth()) {
+			for (int x = 0; x < canvas.getWidth(); x++) {
+				for (int y = 0; y < canvas.getHeight(); y++) {
+					pxw.setColor(x, y, Color.rgb(r, g, b, 1.0));
+					
+					if (raiseR) {
+						r++;
+						if (r > 254) {
+							r = 0;
+							raiseR = false;
+							raiseG = true;
+						} else if (r < 1) {
+							raiseR = true;
+						}
+					} else if (raiseG) {
+						g++;
+						if (g > 254) {
+							g = 0;
+							raiseG = false;
+							raiseB = true;
+						} else if (g < 1) {
+							raiseG = true;
+						}
+					} else if (raiseB) {
+						b++;
+						if (b > 254) {
+							b = 0;
+							raiseB = false;
+							raiseR = true;
+						} else if (b < 1) {
+							raiseB = true;
+						}
+					}
+				}
+			}
+		} else {
+			for (int y = 0; y < canvas.getHeight(); y++) {
+				for (int x = 0; x < canvas.getWidth(); x++) {
+					pxw.setColor(x, y, Color.rgb(r, g, b, 1.0));
+					
+					if (raiseR) {
+						r++;
+						if (r > 254) {
+							r = 0;
+							raiseR = false;
+							raiseG = true;
+						} else if (r < 1) {
+							raiseR = true;
+						}
+					} else if (raiseG) {
+						g++;
+						if (g > 254) {
+							g = 0;
+							raiseG = false;
+							raiseB = true;
+						} else if (g < 1) {
+							raiseG = true;
+						}
+					} else if (raiseB) {
+						b++;
+						if (b > 254) {
+							b = 0;
+							raiseB = false;
+							raiseR = true;
+						} else if (b < 1) {
+							raiseB = true;
+						}
+					}
+				}
+			}
 		}
 	}
-
 }
