@@ -306,8 +306,49 @@ public class Main extends Application {
 		Separator separator2 = new Separator();
 		separator2.setOrientation(Orientation.VERTICAL);
 
-		VBox vBoxSpecialTools = new VBox();
-		vBoxSpecialTools.setPadding(new Insets(10));
+		// Special Tools Section TODO edit --------------------------------------------------------------------------------
+
+		VBox vBoxShapes2 = new VBox();
+		vBoxShapes2.setSpacing(20);
+		vBoxShapes2.setPadding(new Insets(10));
+
+		GridPane gridPaneShapes2 = new GridPane();
+		buttonRect = new Button();
+		buttonRect.setId("rect");
+		buttonRect.setPrefSize(60, 60);
+		buttonRect.setGraphic(new ImageView(new Image("file:src/main/resources/images/rectangle.png")));
+		buttonRect.setOnMouseClicked(e -> {
+			invertCanvas();
+		});
+
+		buttonRoundRect = new Button();
+		buttonRoundRect.setId("roundrect");
+		buttonRoundRect.setPrefSize(60, 60);
+		buttonRoundRect.setGraphic(new ImageView(new Image("file:src/main/resources/images/rounded-rectangle.png")));
+		buttonRoundRect.setOnMouseClicked(e -> {
+			selectTool(e);
+		});
+
+		buttonEllipse = new Button();
+		buttonEllipse.setId("ellipse");
+		buttonEllipse.setPrefSize(60, 60);
+		buttonEllipse.setGraphic(new ImageView(new Image("file:src/main/resources/images/ellipse-outline-shape-variant.png")));
+		buttonEllipse.setOnMouseClicked(e -> {
+			selectTool(e);
+		});
+		Label labelShapes2 = new Label("Special Effects");
+		labelShapes2.setAlignment(Pos.BOTTOM_CENTER);
+		labelShapes2.setContentDisplay(ContentDisplay.CENTER);
+		labelShapes2.setPrefWidth(130);
+		labelShapes2.setTextAlignment(TextAlignment.CENTER);
+
+		gridPaneShapes2.add(buttonRect, 0, 0);
+		gridPaneShapes2.add(buttonRoundRect, 1, 0);
+		gridPaneShapes2.add(buttonEllipse, 2, 0);
+
+		vBoxShapes2.getChildren().addAll(gridPaneShapes2, labelShapes2);
+
+		// Special Tools Section end TODO edit --------------------------------------------------------------------------------
 
 		Separator separator3 = new Separator();
 		separator3.setOrientation(Orientation.VERTICAL);
@@ -366,7 +407,7 @@ public class Main extends Application {
 			separator1, 
 			vBoxShapes, 
 			separator2, 
-			vBoxSpecialTools, 
+			vBoxShapes2, 
 			separator3,
 			vBoxCustomizations
 		);
@@ -654,6 +695,24 @@ public class Main extends Application {
 			}
 		}
 		context.drawImage(snapshot, 0, 0);
+	}
+
+	private void invertCanvas() {
+		undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
+		redoStack = new Stack<>();
+		
+		WritableImage snapshot = canvas.snapshot(null, null);
+		PixelReader pixelReader = snapshot.getPixelReader();
+		WritableImage inverted = new WritableImage((int) snapshot.getWidth(), (int) snapshot.getHeight());
+		PixelWriter pixelWriter = inverted.getPixelWriter();
+		for (int x = 0; x < snapshot.getWidth(); x++) {
+			for (int y = 0; y < snapshot.getHeight(); y++) {
+				Color color = pixelReader.getColor(x, y);
+				pixelWriter.setColor(x, y, color.invert());
+			}
+		}
+		context.drawImage(inverted, 0, 0);
+		
 	}
 
 	private ArrayList<PixelXY> getPixelNeighbors(int x, int y, WritableImage image) {
