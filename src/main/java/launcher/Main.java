@@ -1,6 +1,7 @@
 package launcher;
 
 import java.awt.Desktop;
+import java.io.Console;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -78,6 +79,9 @@ public class Main extends Application {
 	Button buttonRect;
 	Button buttonRoundRect;
 	Button buttonEllipse;
+	Button buttonRect2;
+	Button buttonRoundRect2;
+	Button buttonEllipse2;
 	Button buttonPencil;
 	Button buttonEraser;
 	Button buttonBucket;
@@ -313,38 +317,40 @@ public class Main extends Application {
 		vBoxShapes2.setPadding(new Insets(10));
 
 		GridPane gridPaneShapes2 = new GridPane();
-		buttonRect = new Button();
-		buttonRect.setId("rect");
-		buttonRect.setPrefSize(60, 60);
-		buttonRect.setGraphic(new ImageView(new Image("file:src/main/resources/images/rectangle.png")));
-		buttonRect.setOnMouseClicked(e -> {
+		buttonRect2 = new Button();
+		buttonRect2.setId("rect2");
+		buttonRect2.setPrefSize(60, 60);
+		buttonRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/rectangle.png")));
+		buttonRect2.setOnMouseClicked(e -> {
 			invertCanvas();
 		});
 
-		buttonRoundRect = new Button();
-		buttonRoundRect.setId("roundrect");
-		buttonRoundRect.setPrefSize(60, 60);
-		buttonRoundRect.setGraphic(new ImageView(new Image("file:src/main/resources/images/rounded-rectangle.png")));
-		buttonRoundRect.setOnMouseClicked(e -> {
-			selectTool(e);
+		// David
+		buttonRoundRect2 = new Button();
+		buttonRoundRect2.setId("roundrect2");
+		buttonRoundRect2.setPrefSize(60, 60);
+		buttonRoundRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/rounded-rectangle.png")));
+		buttonRoundRect2.setOnMouseClicked(e -> {
+			blackWhite();;
 		});
 
-		buttonEllipse = new Button();
-		buttonEllipse.setId("ellipse");
-		buttonEllipse.setPrefSize(60, 60);
-		buttonEllipse.setGraphic(new ImageView(new Image("file:src/main/resources/images/ellipse-outline-shape-variant.png")));
-		buttonEllipse.setOnMouseClicked(e -> {
-			selectTool(e);
+		buttonEllipse2 = new Button();
+		buttonEllipse2.setId("ellipse2");
+		buttonEllipse2.setPrefSize(60, 60);
+		buttonEllipse2.setGraphic(new ImageView(new Image("file:src/main/resources/images/ellipse-outline-shape-variant.png")));
+		buttonEllipse2.setOnMouseClicked(e -> {
+			ufinishedFunction();
 		});
+
 		Label labelShapes2 = new Label("Special Effects");
 		labelShapes2.setAlignment(Pos.BOTTOM_CENTER);
 		labelShapes2.setContentDisplay(ContentDisplay.CENTER);
 		labelShapes2.setPrefWidth(130);
 		labelShapes2.setTextAlignment(TextAlignment.CENTER);
 
-		gridPaneShapes2.add(buttonRect, 0, 0);
-		gridPaneShapes2.add(buttonRoundRect, 1, 0);
-		gridPaneShapes2.add(buttonEllipse, 2, 0);
+		gridPaneShapes2.add(buttonRect2, 0, 0);
+		gridPaneShapes2.add(buttonRoundRect2, 1, 0);
+		gridPaneShapes2.add(buttonEllipse2, 2, 0);
 
 		vBoxShapes2.getChildren().addAll(gridPaneShapes2, labelShapes2);
 
@@ -547,7 +553,10 @@ public class Main extends Application {
 			buttonPicker, 
 			buttonRect, 
 			buttonRoundRect, 
-			buttonEllipse 
+			buttonEllipse,
+			buttonRect2, 
+			buttonRoundRect2,
+			buttonEllipse2
 		};
 		this.tools = tools_;
 		bindZoom();
@@ -698,9 +707,6 @@ public class Main extends Application {
 	}
 
 	private void invertCanvas() {
-		undoStack.add(new CanvasHistory(canvas.snapshot(null, null)));
-		redoStack = new Stack<>();
-		
 		WritableImage snapshot = canvas.snapshot(null, null);
 		PixelReader pixelReader = snapshot.getPixelReader();
 		WritableImage inverted = new WritableImage((int) snapshot.getWidth(), (int) snapshot.getHeight());
@@ -711,8 +717,15 @@ public class Main extends Application {
 				pixelWriter.setColor(x, y, color.invert());
 			}
 		}
-		context.drawImage(inverted, 0, 0);
-		
+		undoStack.add(new CanvasHistory(inverted));
+		context.drawImage(undoStack.peek().getImage(), 0, 0);
+	}
+
+	// David
+	private void blackWhite() {
+	}
+
+	private void ufinishedFunction() {
 	}
 
 	private ArrayList<PixelXY> getPixelNeighbors(int x, int y, WritableImage image) {
