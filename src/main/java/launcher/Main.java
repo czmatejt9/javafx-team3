@@ -1,7 +1,6 @@
 package launcher;
 
 import java.awt.Desktop;
-import java.io.Console;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -331,7 +330,7 @@ public class Main extends Application {
 		buttonRoundRect2.setPrefSize(60, 60);
 		buttonRoundRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/rounded-rectangle.png")));
 		buttonRoundRect2.setOnMouseClicked(e -> {
-			blackWhite();;
+			blackWhite();
 		});
 
 		buttonEllipse2 = new Button();
