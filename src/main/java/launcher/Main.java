@@ -13,7 +13,6 @@ import classes.PixelXY;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import classes.GreyscaleFilter;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -40,6 +39,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -54,6 +54,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
@@ -86,7 +87,6 @@ public class Main extends Application {
 	Button buttonEraser;
 	Button buttonBucket;
 	Button buttonPicker;
-	Button buttonGreyScale;    // stepan
 
 	Button[] tools;
 	Cursor cursor;
@@ -251,19 +251,11 @@ public class Main extends Application {
 		buttonPicker.setOnMouseClicked(e -> {
 			selectTool(e);
 		});
-		buttonGreyScale = new Button();
-		buttonGreyScale.setId("greyscale");
-		buttonGreyScale.setPrefSize(30, 30);
-		buttonGreyScale.setGraphic(new ImageView(new Image("file:src/main/resources/images/logo2.png")));
-		buttonGreyScale.setOnMouseClicked(e -> {
-			selectTool(e);
-		});
 
 		gridPaneTools.add(buttonPencil, 0, 0);
 		gridPaneTools.add(buttonEraser, 0, 1);
 		gridPaneTools.add(buttonBucket, 1, 0);
 		gridPaneTools.add(buttonPicker, 1, 1);
-		gridPaneTools.add(buttonGreyScale, 1, 2);
 
 		Label labelTools = new Label("Tools");
 		labelTools.setAlignment(Pos.BOTTOM_CENTER);
@@ -340,7 +332,7 @@ public class Main extends Application {
 		buttonRoundRect2.setPrefSize(60, 60);
 		buttonRoundRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/rounded-rectangle.png")));
 		buttonRoundRect2.setOnMouseClicked(e -> {
-			blackWhite();
+			grayscale();
 		});
 
 		buttonEllipse2 = new Button();
@@ -560,7 +552,6 @@ public class Main extends Application {
 			buttonEraser, 
 			buttonBucket, 
 			buttonPicker,
-			buttonGreyScale,
 			buttonRect, 
 			buttonRoundRect, 
 			buttonEllipse,
@@ -649,8 +640,6 @@ public class Main extends Application {
 			}
 
 			switch (selectedTool) {
-				case "greyScale":
-					GreyScale(new Stage());
 				case "pencil":
 					context.strokeLine(prevX, prevY, e.getX(), e.getY());
 					prevX = e.getX();
@@ -734,7 +723,20 @@ public class Main extends Application {
 	}
 
 	// David
-	private void blackWhite() {
+	private void grayscale() {
+		WritableImage snapshot = canvas.snapshot(null, null);
+		PixelReader pixelReader = snapshot.getPixelReader();
+		WritableImage editedImage = new WritableImage((int) snapshot.getWidth(), (int) snapshot.getHeight());
+		PixelWriter pixelWriter = editedImage.getPixelWriter();
+		for (int x = 0; x < snapshot.getWidth(); x++) {
+			for (int y = 0; y < snapshot.getHeight(); y++) {
+				Color color = pixelReader.getColor(x, y);
+				float average = (float)(color.getRed() + color.getGreen() + color.getBlue())/3;
+				pixelWriter.setColor(x, y, new Color(average, average, average, 1));
+			}
+		}
+		undoStack.add(new CanvasHistory(editedImage));
+		context.drawImage(undoStack.peek().getImage(), 0, 0);
 	}
 
 	private void ufinishedFunction() {
@@ -832,9 +834,6 @@ public class Main extends Application {
 
 		canvas.setOnMouseEntered((e) -> bigAnchor.setCursor(cursor));
 		canvas.setOnMouseExited((e) -> bigAnchor.setCursor(Cursor.DEFAULT));
-	}
-	private void GreyScale(Stage stage) {
-		GreyscaleFilter.greyScale(stage,image);
 	}
 
 	private void openFile() {
