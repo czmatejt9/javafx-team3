@@ -1,14 +1,18 @@
 package launcher;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
-import java.awt.Desktop;
+
 import classes.CanvasHistory;
 import classes.ImageFxIO;
 import classes.PixelXY;
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import classes.GreyscaleFilter;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -33,8 +37,8 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -53,9 +57,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
-import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -78,6 +79,9 @@ public class Main extends Application {
 	Button buttonRect;
 	Button buttonRoundRect;
 	Button buttonEllipse;
+	Button buttonRect2;
+	Button buttonRoundRect2;
+	Button buttonEllipse2;
 	Button buttonPencil;
 	Button buttonEraser;
 	Button buttonBucket;
@@ -315,8 +319,51 @@ public class Main extends Application {
 		Separator separator2 = new Separator();
 		separator2.setOrientation(Orientation.VERTICAL);
 
-		VBox vBoxSpecialTools = new VBox();
-		vBoxSpecialTools.setPadding(new Insets(10));
+		// Special Tools Section TODO edit --------------------------------------------------------------------------------
+
+		VBox vBoxShapes2 = new VBox();
+		vBoxShapes2.setSpacing(20);
+		vBoxShapes2.setPadding(new Insets(10));
+
+		GridPane gridPaneShapes2 = new GridPane();
+		buttonRect2 = new Button();
+		buttonRect2.setId("rect2");
+		buttonRect2.setPrefSize(60, 60);
+		buttonRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/rectangle.png")));
+		buttonRect2.setOnMouseClicked(e -> {
+			invertCanvas();
+		});
+
+		// David
+		buttonRoundRect2 = new Button();
+		buttonRoundRect2.setId("roundrect2");
+		buttonRoundRect2.setPrefSize(60, 60);
+		buttonRoundRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/rounded-rectangle.png")));
+		buttonRoundRect2.setOnMouseClicked(e -> {
+			blackWhite();
+		});
+
+		buttonEllipse2 = new Button();
+		buttonEllipse2.setId("ellipse2");
+		buttonEllipse2.setPrefSize(60, 60);
+		buttonEllipse2.setGraphic(new ImageView(new Image("file:src/main/resources/images/ellipse-outline-shape-variant.png")));
+		buttonEllipse2.setOnMouseClicked(e -> {
+			ufinishedFunction();
+		});
+
+		Label labelShapes2 = new Label("Special Effects");
+		labelShapes2.setAlignment(Pos.BOTTOM_CENTER);
+		labelShapes2.setContentDisplay(ContentDisplay.CENTER);
+		labelShapes2.setPrefWidth(130);
+		labelShapes2.setTextAlignment(TextAlignment.CENTER);
+
+		gridPaneShapes2.add(buttonRect2, 0, 0);
+		gridPaneShapes2.add(buttonRoundRect2, 1, 0);
+		gridPaneShapes2.add(buttonEllipse2, 2, 0);
+
+		vBoxShapes2.getChildren().addAll(gridPaneShapes2, labelShapes2);
+
+		// Special Tools Section end TODO edit --------------------------------------------------------------------------------
 
 		Separator separator3 = new Separator();
 		separator3.setOrientation(Orientation.VERTICAL);
@@ -375,7 +422,7 @@ public class Main extends Application {
 			separator1, 
 			vBoxShapes, 
 			separator2, 
-			vBoxSpecialTools, 
+			vBoxShapes2, 
 			separator3,
 			vBoxCustomizations
 		);
@@ -516,7 +563,10 @@ public class Main extends Application {
 			buttonGreyScale,
 			buttonRect, 
 			buttonRoundRect, 
-			buttonEllipse 
+			buttonEllipse,
+			buttonRect2, 
+			buttonRoundRect2,
+			buttonEllipse2
 		};
 		this.tools = tools_;
 		bindZoom();
@@ -666,6 +716,28 @@ public class Main extends Application {
 			}
 		}
 		context.drawImage(snapshot, 0, 0);
+	}
+
+	private void invertCanvas() {
+		WritableImage snapshot = canvas.snapshot(null, null);
+		PixelReader pixelReader = snapshot.getPixelReader();
+		WritableImage inverted = new WritableImage((int) snapshot.getWidth(), (int) snapshot.getHeight());
+		PixelWriter pixelWriter = inverted.getPixelWriter();
+		for (int x = 0; x < snapshot.getWidth(); x++) {
+			for (int y = 0; y < snapshot.getHeight(); y++) {
+				Color color = pixelReader.getColor(x, y);
+				pixelWriter.setColor(x, y, color.invert());
+			}
+		}
+		undoStack.add(new CanvasHistory(inverted));
+		context.drawImage(undoStack.peek().getImage(), 0, 0);
+	}
+
+	// David
+	private void blackWhite() {
+	}
+
+	private void ufinishedFunction() {
 	}
 
 	private ArrayList<PixelXY> getPixelNeighbors(int x, int y, WritableImage image) {
@@ -863,16 +935,20 @@ public class Main extends Application {
 		cursor = new ImageCursor();
 		switch (id) {
 			case "pencil":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pencil32.png")));
+				Image image = new Image(getClass().getResourceAsStream("/images/pencil32.png"));
+				cursor = new ImageCursor(image, 0, image.getHeight());
 				break;
 			case "eraser":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/eraser32.png")));
+				Image image2 = new Image(getClass().getResourceAsStream("/images/eraser32.png"));
+				cursor = new ImageCursor(image2, 0, image2.getHeight());
 				break;
 			case "bucket":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/fill32.png")));
+				Image image3 = new Image(getClass().getResourceAsStream("/images/fill32.png"));
+				cursor = new ImageCursor(image3, 0, image3.getHeight());
 				break;
 			case "picker":
-				cursor = new ImageCursor(new Image(getClass().getResourceAsStream("/images/pipette32.png")));
+				Image image4 = new Image(getClass().getResourceAsStream("/images/pipette32.png"));
+				cursor = new ImageCursor(image4, 0, image4.getHeight());
 				break;
 			default:
 				cursor = Cursor.CROSSHAIR;
@@ -887,11 +963,11 @@ public class Main extends Application {
 	}
 
 	private void changeColor1() {
-		//color1 = colorPicker1.getValue();
+		color1 = colorPicker1.getValue();
 	}
 
 	private void changeColor2() {
-		// color2 = colorPicker2.getValue();
+		color2 = colorPicker2.getValue();
 	}
 
 	static private boolean compareImages(Image im1, Image im2) {
@@ -933,7 +1009,6 @@ public class Main extends Application {
 			for (int x = 0; x < canvas.getWidth(); x++) {
 				for (int y = 0; y < canvas.getHeight(); y++) {
 					pxw.setColor(x, y, Color.rgb(r, g, b, 1.0));
-					
 					if (raiseR) {
 						r++;
 						if (r > 254) {
