@@ -332,7 +332,7 @@ public class Main extends Application {
 		buttonRoundRect2.setPrefSize(60, 60);
 		buttonRoundRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/rounded-rectangle.png")));
 		buttonRoundRect2.setOnMouseClicked(e -> {
-			grayscale();
+			greyscale();
 		});
 
 		buttonEllipse2 = new Button();
@@ -723,7 +723,7 @@ public class Main extends Application {
 	}
 
 	// David
-	private void grayscale() {
+	private void greyscale() {
 		WritableImage snapshot = canvas.snapshot(null, null);
 		PixelReader pixelReader = snapshot.getPixelReader();
 		WritableImage editedImage = new WritableImage((int) snapshot.getWidth(), (int) snapshot.getHeight());
