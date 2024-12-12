@@ -332,7 +332,7 @@ public class Main extends Application {
 		buttonRoundRect2.setPrefSize(60, 60);
 		buttonRoundRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/rounded-rectangle.png")));
 		buttonRoundRect2.setOnMouseClicked(e -> {
-			greyscale();
+			grayscale();
 		});
 
 		buttonEllipse2 = new Button();
@@ -723,7 +723,7 @@ public class Main extends Application {
 	}
 
 	// David
-	private void greyscale() {
+	private void grayscale() {
 		WritableImage snapshot = canvas.snapshot(null, null);
 		PixelReader pixelReader = snapshot.getPixelReader();
 		WritableImage editedImage = new WritableImage((int) snapshot.getWidth(), (int) snapshot.getHeight());
@@ -997,7 +997,9 @@ public class Main extends Application {
 
 	private void generateImage() {
 		newFile();
-		PixelWriter pxw = context.getPixelWriter();
+		WritableImage snapshot = canvas.snapshot(null, null);
+		WritableImage editedImage = new WritableImage((int) snapshot.getWidth(), (int) snapshot.getHeight());
+		PixelWriter pixelWriter = editedImage.getPixelWriter();
 		boolean raiseR = true;
 		boolean raiseG = false;
 		boolean raiseB = false;
@@ -1007,7 +1009,7 @@ public class Main extends Application {
 		if (canvas.getHeight() >= canvas.getWidth()) {
 			for (int x = 0; x < canvas.getWidth(); x++) {
 				for (int y = 0; y < canvas.getHeight(); y++) {
-					pxw.setColor(x, y, Color.rgb(r, g, b, 1.0));
+					pixelWriter.setColor(x, y, Color.rgb(r, g, b, 1.0));
 					if (raiseR) {
 						r++;
 						if (r > 254) {
@@ -1041,7 +1043,7 @@ public class Main extends Application {
 		} else {
 			for (int y = 0; y < canvas.getHeight(); y++) {
 				for (int x = 0; x < canvas.getWidth(); x++) {
-					pxw.setColor(x, y, Color.rgb(r, g, b, 1.0));
+					pixelWriter.setColor(x, y, Color.rgb(r, g, b, 1.0));
 					
 					if (raiseR) {
 						r++;
@@ -1074,5 +1076,7 @@ public class Main extends Application {
 				}
 			}
 		}
+		undoStack.add(new CanvasHistory(editedImage));
+		context.drawImage(undoStack.peek().getImage(), 0, 0);
 	}
 }
