@@ -321,7 +321,7 @@ public class Main extends Application {
 		buttonRect2 = new Button();
 		buttonRect2.setId("rect2");
 		buttonRect2.setPrefSize(60, 60);
-		buttonRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/rectangle.png")));
+		buttonRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/I_image.png")));
 		buttonRect2.setOnMouseClicked(e -> {
 			invertCanvas();
 		});
@@ -330,7 +330,7 @@ public class Main extends Application {
 		buttonRoundRect2 = new Button();
 		buttonRoundRect2.setId("roundrect2");
 		buttonRoundRect2.setPrefSize(60, 60);
-		buttonRoundRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/rounded-rectangle.png")));
+		buttonRoundRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/G_image.png")));
 		buttonRoundRect2.setOnMouseClicked(e -> {
 			grayscale();
 		});
