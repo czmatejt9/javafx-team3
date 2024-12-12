@@ -6,12 +6,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class GrayscaleFilter {
-    public void grayScale(Stage primaryStage) {
-        // Load an image
-        Image image = new Image("file:example.jpg"); // Replace with your image path
-        ImageView imageView = new ImageView(image);
 
+public class GreyscaleFilter {
+    private Image image;
+
+    public GreyscaleFilter(Stage stage, Image image){
+        this.image = image;
+        
+    }
+
+
+    public static void greyScale(Stage stage, Image image) {
+        // Load an image
+        Stage primaryStage = new Stage();
+        ImageView imageView = new ImageView(image);
         // Apply grayscale filter using ColorAdjust
         ColorAdjust grayscale = new ColorAdjust();
         grayscale.setSaturation(-1); // Set saturation to -1 for grayscale effect
