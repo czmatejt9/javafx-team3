@@ -337,9 +337,9 @@ public class App extends Application {
 		buttonEllipse2 = new Button();
 		buttonEllipse2.setId("ellipse2");
 		buttonEllipse2.setPrefSize(60, 60);
-		buttonEllipse2.setGraphic(new ImageView(new Image("file:src/main/resources/images/ellipse-outline-shape-variant.png")));
+		buttonEllipse2.setGraphic(new ImageView(new Image("file:src/main/resources/images/letter_S.png")));
 		buttonEllipse2.setOnMouseClicked(e -> {
-			ufinishedFunction();
+			colorShift();
 		});
 
 		Label labelShapes2 = new Label("Special Effects");
@@ -738,7 +738,19 @@ public class App extends Application {
 		context.drawImage(undoStack.peek().getImage(), 0, 0);
 	}
 
-	private void ufinishedFunction() {
+	private void colorShift() {
+		WritableImage snapshot = canvas.snapshot(null, null);
+		PixelReader pixelReader = snapshot.getPixelReader();
+		WritableImage editedImage = new WritableImage((int) snapshot.getWidth(), (int) snapshot.getHeight());
+		PixelWriter pixelWriter = editedImage.getPixelWriter();
+		for (int x = 0; x < snapshot.getWidth(); x++) {
+			for (int y = 0; y < snapshot.getHeight(); y++) {
+				Color color = pixelReader.getColor(x, y);
+				pixelWriter.setColor(x, y, new Color(color.getGreen(), color.getBlue(), color.getRed(), 1));
+			}
+		}
+		undoStack.add(new CanvasHistory(editedImage));
+		context.drawImage(undoStack.peek().getImage(), 0, 0);
 	}
 
 	private ArrayList<PixelXY> getPixelNeighbors(int x, int y, WritableImage image) {
