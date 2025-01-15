@@ -10,6 +10,4 @@ module jabaPaint {
 
     exports launcher;
     exports controllers;
-    opens controllers to javafx.fxml;
-
 }
