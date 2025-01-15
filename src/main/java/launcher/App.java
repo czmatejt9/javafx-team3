@@ -225,28 +225,28 @@ public class App extends Application {
 		buttonPencil = new Button();
 		buttonPencil.setId("pencil");
 		buttonPencil.setPrefSize(60, 60);
-		buttonPencil.setGraphic(new ImageView(new Image("file:src/main/resources/images/pencil.png")));
+		buttonPencil.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/pencil.png"))));
 		buttonPencil.setOnMouseClicked(e -> {
 			selectTool(e);
 		});
 		buttonEraser = new Button();
 		buttonEraser.setId("eraser");
 		buttonEraser.setPrefSize(60, 60);
-		buttonEraser.setGraphic(new ImageView(new Image("file:src/main/resources/images/eraser.png")));
+		buttonEraser.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/eraser.png"))));
 		buttonEraser.setOnMouseClicked(e -> {
 			selectTool(e);
 		});
 		buttonBucket = new Button();
 		buttonBucket.setId("bucket");
 		buttonBucket.setPrefSize(60, 60);
-		buttonBucket.setGraphic(new ImageView(new Image("file:src/main/resources/images/fill.png")));
+		buttonBucket.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/fill.png"))));
 		buttonBucket.setOnMouseClicked(e -> {
 			selectTool(e);
 		});
 		buttonPicker = new Button();
 		buttonPicker.setId("picker");
 		buttonPicker.setPrefSize(60, 60);
-		buttonPicker.setGraphic(new ImageView(new Image("file:src/main/resources/images/pipette.png")));
+		buttonPicker.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/pipette.png"))));
 		buttonPicker.setOnMouseClicked(e -> {
 			selectTool(e);
 		});
@@ -275,7 +275,7 @@ public class App extends Application {
 		buttonRect = new Button();
 		buttonRect.setId("rect");
 		buttonRect.setPrefSize(60, 60);
-		buttonRect.setGraphic(new ImageView(new Image("file:src/main/resources/images/rectangle.png")));
+		buttonRect.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/rectangle.png"))));
 		buttonRect.setOnMouseClicked(e -> {
 			selectTool(e);
 		});
@@ -283,7 +283,7 @@ public class App extends Application {
 		buttonRoundRect = new Button();
 		buttonRoundRect.setId("roundrect");
 		buttonRoundRect.setPrefSize(60, 60);
-		buttonRoundRect.setGraphic(new ImageView(new Image("file:src/main/resources/images/rounded-rectangle.png")));
+		buttonRoundRect.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/rounded-rectangle.png"))));
 		buttonRoundRect.setOnMouseClicked(e -> {
 			selectTool(e);
 		});
@@ -291,7 +291,7 @@ public class App extends Application {
 		buttonEllipse = new Button();
 		buttonEllipse.setId("ellipse");
 		buttonEllipse.setPrefSize(60, 60);
-		buttonEllipse.setGraphic(new ImageView(new Image("file:src/main/resources/images/ellipse-outline-shape-variant.png")));
+		buttonEllipse.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/ellipse-outline-shape-variant.png"))));
 		buttonEllipse.setOnMouseClicked(e -> {
 			selectTool(e);
 		});
@@ -320,7 +320,7 @@ public class App extends Application {
 		buttonRect2 = new Button();
 		buttonRect2.setId("rect2");
 		buttonRect2.setPrefSize(60, 60);
-		buttonRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/I_image.png")));
+		buttonRect2.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/I_image.png"))));
 		buttonRect2.setOnMouseClicked(e -> {
 			invertCanvas();
 		});
@@ -329,7 +329,7 @@ public class App extends Application {
 		buttonRoundRect2 = new Button();
 		buttonRoundRect2.setId("roundrect2");
 		buttonRoundRect2.setPrefSize(60, 60);
-		buttonRoundRect2.setGraphic(new ImageView(new Image("file:src/main/resources/images/G_image.png")));
+		buttonRoundRect2.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/G_image.png"))));
 		buttonRoundRect2.setOnMouseClicked(e -> {
 			grayscale();
 		});
@@ -337,7 +337,7 @@ public class App extends Application {
 		buttonEllipse2 = new Button();
 		buttonEllipse2.setId("ellipse2");
 		buttonEllipse2.setPrefSize(60, 60);
-		buttonEllipse2.setGraphic(new ImageView(new Image("file:src/main/resources/images/letter_S.png")));
+		buttonEllipse2.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/images/letter_S.png"))));
 		buttonEllipse2.setOnMouseClicked(e -> {
 			colorShift();
 		});
@@ -370,7 +370,7 @@ public class App extends Application {
 		vBoxSize.setPrefSize(80, 80);
 		vBoxSize.setSpacing(6);
 
-		ImageView imageViewSize = new ImageView(new Image("file:src/main/resources/images/width.png"));
+		ImageView imageViewSize = new ImageView(new Image(getClass().getResourceAsStream("/images/width.png")));
 		comboBoxSize = new ComboBox<>();
 		comboBoxSize.setPrefSize(70, 25);
 		ObservableList<String> options = FXCollections.observableArrayList("1 px", "3 px", "5 px", "8 px", "15 px");
