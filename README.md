@@ -10,8 +10,5 @@
 
 ## Jak spustit  
 1. Ujistěte se, že máte nainstalovanou **Javu** (verze 17 nebo vyšší).  
-2. Stáhněte projekt z repozitáře.  
-3. Zkompilujte a spusťte pomocí příkazů:  
-   ```bash
-   // TODO
-   ```
+2. Stáhněte si .jar file z releasu
+3. Na windowsu double klikněte soubor
